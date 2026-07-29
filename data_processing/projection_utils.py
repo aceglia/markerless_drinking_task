@@ -66,12 +66,15 @@ def pc_from_rgbd(depth, color, camera_config):
     return o3d_pcd
 
 
-def get_mid_point(should_pos, distance_factor=0.8):
+def get_mid_point(should_pos, distance_factor=0.8, weight=[1, 1]):
+    pose_tmp = np.array(should_pos)
+    pose_tmp[0, 0] = pose_tmp[0, 0] * weight[0]
+    pose_tmp[1, 0] = pose_tmp[1, 0] * weight[1]
     distance = np.linalg.norm(
-        [(should_pos[1, 0] - should_pos[0, 0]), (should_pos[1, 1] - should_pos[0, 1])]
+        [(pose_tmp[1, 0] - pose_tmp[0, 0]), (pose_tmp[1, 1] - pose_tmp[0, 1])]
     ) * distance_factor
-    midline = [(should_pos[1, 0] + should_pos[0, 0]) / 2, (should_pos[1, 1] + should_pos[0, 1]) / 2]
-    unit_vector = get_vec_from_should(should_pos)
+    midline = [(pose_tmp[1, 0] * weight[1] + pose_tmp[0, 0] * weight[0]) / 2, (pose_tmp[1, 1] + pose_tmp[0, 1]) / 2]
+    unit_vector = get_vec_from_should(pose_tmp)
     mid_point = midline + distance * unit_vector
     return mid_point, unit_vector
 

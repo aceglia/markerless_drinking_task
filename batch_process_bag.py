@@ -38,15 +38,17 @@ for file in all_bag_files_names:
 
     # Configure the pipeline to stream the depth stream
     # Change this parameters according to the recorded bag file resolution
-    config.enable_stream(rs.stream.depth, 848, 480, rs.format.z16, 30)
-    config.enable_stream(rs.stream.color, 1280, 720, rs.format.rgb8, 30)
+    # config.enable_stream(rs.stream.depth, 848, 480, rs.format.z16, 60)
+    # config.enable_stream(rs.stream.color, 848, 480, rs.format.rgb8, 60)
 
     profile = pipeline.start(config)
     converter = CameraConverter(use_camera=True)
     converter.set_intrinsics(pipeline)
     converter.set_extrinsics(pipeline)
-    converter.save_config(os.path.join(tmp_path, "camera_config.json"))
+    converter.set_extrinsics_to_accel(pipeline)
     playback = profile.get_device().as_playback()
+    depth_profile = profile.get_stream(rs.stream.depth).as_video_stream_profile()
+    accel_profile = profile.get_stream(rs.stream.accel).as_motion_stream_profile()
     playback.set_real_time(False)
     align_to = rs.stream.depth
     align = rs.align(align_to)
@@ -54,10 +56,16 @@ for file in all_bag_files_names:
     os.makedirs(tmp_path + '/annotated', exist_ok=True)
     import time 
     tic = time.time()
+    count = 0
     try:
         while True:
             frames = pipeline.wait_for_frames(1500)
             frames = align.process(frames)
+            if count > 50:
+                converter.save_config(os.path.join(tmp_path, "camera_config.json"))
+            else:
+                converter.add_accel_frame(frames)
+                count += 1
             frame_number = frames.frame_number
             # print("processing frame : ", frame_number)
             # Get depth frame
@@ -77,8 +85,12 @@ for file in all_bag_files_names:
             global_mat = np.concatenate((keypoints[0], scores[0][:, None], idx[0][:, None]), axis = -1)
             keypoints_mat = np.vstack([keypoints_mat, global_mat[None]]) if keypoints_mat is not None else global_mat[None]
     except:
+        if count <= 50:
+            converter.save_config(os.path.join(tmp_path, "camera_config.json"))
         pass
     finally:
+        if count <= 50:
+            converter.save_config(os.path.join(tmp_path, "camera_config.json"))
         print(time.time()-tic)
         pipeline.stop()
         np.save(tmp_path + '/annotated/keypoints', keypoints_mat)

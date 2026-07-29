@@ -1,11 +1,11 @@
 import os
 import pickle
 
-from matplotlib import pyplot as plt
 import numpy as np
 import opensim as osim
 from filterpy.kalman import UnscentedKalmanFilter as UKF
 from filterpy.kalman import MerweScaledSigmaPoints
+from .io_utils import write_mot_file
 
 # import biorbd
 from enum import IntEnum
@@ -583,7 +583,7 @@ class JointMarkerUKF:
             self.states[self.N_JOINTS :, i] = self._augment_q(states_tmp[self.N_ACTIVE_JOINTS :])
         return self.states
 
-    def save(self, filename, initial_dir = None):
+    def save(self, filename, initial_dir = None, mot_file=False):
         dic_to_save = {
             'model_path': self.model.getDocumentFileName(),
             'dt': self.dt,
@@ -603,37 +603,6 @@ class JointMarkerUKF:
         if initial_dir is not None:
             dic_to_save.update(initial_dir)
         with open(filename, 'wb') as f:
-            pickle.dump(dic_to_save, f, protocol=pickle.HIGHEST_PROTOCOL)       
-
-def write_mot_file(filename, time_step, dof_names, states):
-    table = osim.TimeSeriesTable()
-    labels = osim.StdVectorString()
-    [labels.append(name) for name in dof_names]
-    table.setColumnLabels(labels)
-    for row in range(states.shape[1]):
-        table.appendRow(time_step * row, osim.RowVector(states[:, row]))
-    if os.path.exists(filename):
-        os.remove(filename)
-    osim.STOFileAdapter.write(table, filename)
-
-if __name__ == "__main__":
-    dirs = os.listdir(r"D:\Documents\Programmation\markerless_drinking_task\videos")
-    dirs = [d for d in dirs if os.path.isdir(os.path.join(r"D:\Documents\Programmation\markerless_drinking_task\videos", d))]
-    for dir in dirs:
-        dir = os.path.join(r"D:\Documents\Programmation\markerless_drinking_task\videos", dir)
-        marker_path = os.path.join(dir, "annotated", "keypoints_3d.pkl")
-        model_path = r"D:\Documents\Programmation\markerless_drinking_task\opensim\wu_modified_markerless.osim"
-        with open(marker_path, "rb") as f:
-            data = pickle.load(f)
-        keypoints_3d = data["keypoints_3d"]
-        names = data["key_points_names"]
-        markers = np.array(keypoints_3d).T
-
-        model = osim.Model(model_path)
-        ukf = JointMarkerUKF(
-            model, data_rate=30, with_markers=False, type="constant_acceleration", experimental_marker_names=names
-        )
-        states = ukf.run(markers)
-        ukf.save(os.path.join(dir, "annotated", "ukf_results.pkl"), data)
-
-        write_mot_file(os.path.join(dir, "annotated", "ukf_results.mot"), 1/30, ukf.dof_names, states[:ukf.N_JOINTS])
+            pickle.dump(dic_to_save, f, protocol=pickle.HIGHEST_PROTOCOL)
+        if mot_file:
+            write_mot_file(filename.replace(".pkl", '.mot'), self.dt, self.dof_names, self.states[:self.N_JOINTS])       

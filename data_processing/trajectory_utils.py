@@ -27,9 +27,10 @@ def remove_outliers(keypoints, on_diff=True):
     if on_diff:
         to_eval = keypoints[1:] - keypoints[:-1]
     for ch in range(keypoints.shape[1]):
-        ch_data = to_eval[:, ch, :]
-        mean = np.mean(ch_data[ch_data[:, 2].nonzero()[0], :], axis=0)
-        std = np.std(ch_data[ch_data[:, 2].nonzero()[0], :], axis=0)
+        ch_data = abs(to_eval[:, ch, :])
+        mean = np.nanmean(ch_data[ch_data[:, 2].nonzero()[0], :], axis=0)
+        std = np.nanstd(ch_data[ch_data[:, 2].nonzero()[0], :], axis=0)
+
         lower = mean - 3 * std
         upper = mean + 3 * std
         valid_mask = np.all((ch_data >= lower) & (ch_data <= upper), axis=1)
@@ -64,11 +65,21 @@ def clean_trajectory(keypoints, idxs=None, eps_list=[0.1, 0.08, 0.06, 0.04, 0.02
             max_ch_x = np.nanmax(ch_diff_x)
             max_ch_y = np.nanmax(ch_diff_y)
             max_ch = np.nanmax(ch_diff)
-            ratio = max_ch / np.max([max_ch_x, max_ch_y]) + 1e-6
-            if ratio > 5:
-                clustering = DBSCAN(eps=eps, min_samples=5).fit(keypoints[:, ch, :])
+            ratio = max_ch / np.min([max_ch_x, max_ch_y]) + 1e-6
+            if ratio > 1:
+                nan_mask = np.isnan(filtered[:, ch, :]).any(axis=1)
+                valid_data = filtered[:, ch, :][~nan_mask]
+                clustering = DBSCAN(eps=eps, min_samples=5).fit(valid_data)
                 labels = clustering.labels_
-                filtered[:, ch, :][labels != clustering.labels_[0]] = np.nan
+                valid_labels = labels[labels >= 0]
+                if len(valid_labels):
+                    main_label = np.bincount(valid_labels).argmax()
+                    valid_data[labels != main_label] = np.nan
+
+                data_rebuilt = np.full_like(filtered[:, ch, :], np.nan)
+                data_rebuilt[~nan_mask] = valid_data
+
+                filtered[:, ch, :] = data_rebuilt
             else:
                 break
         if not np.all(np.isfinite(filtered[:, ch, :])):

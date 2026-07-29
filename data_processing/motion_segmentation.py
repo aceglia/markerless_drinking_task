@@ -1,5 +1,3 @@
-import os
-
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -12,14 +10,14 @@ try:
     from ultralytics import YOLO
 except ImportError:
     pass
-from sklearn.cluster import DBSCAN
 
 
 class MotionSegmentation:
-    def __init__(self, expe_markers, experimental_marker_names, joint_angles=None, joint_names=None, fps=30):
+    def __init__(self, expe_markers, experimental_marker_names, joint_angles=None, joint_names=None, fps=30, side='left'):
         self.expe_markers = expe_markers
         self.experimental_marker_names = experimental_marker_names
         self.joint_angles = joint_angles
+        self.side = side
         self.joint_names = joint_names
         self.fps = fps
         self.time = np.arange(expe_markers.shape[-1]) / fps
@@ -27,25 +25,39 @@ class MotionSegmentation:
         self._yolo_model = None
 
     def _compute_velocity(self):
-        markers_velocity = np.gradient(self.expe_markers, 1 / self.fps, axis=-1, edge_order=1)
-        self.markers_speed_norm = np.linalg.norm(markers_velocity, axis=0) * 1e3
-        self.wrist_marker = self.expe_markers[:, self.experimental_marker_names.index("left_wrist"), :]
-        self.wrist_marker_speed_norm = self.markers_speed_norm[self.experimental_marker_names.index("left_wrist"), :]
+        self.markers_velocity = np.gradient(self.expe_markers, 1 / self.fps, axis=-1, edge_order=1)
+        self.markers_acceleration = np.gradient(self.markers_velocity, 1 / self.fps, axis=-1, edge_order=1)
+        self.markers_jerk = np.gradient(self.markers_acceleration, 1 / self.fps, axis=-1, edge_order=1)
+        self.markers_jerk_norm = np.linalg.norm(self.markers_jerk, axis=0) * 1e3
+        self.markers_acc_norm = np.linalg.norm(self.markers_acceleration, axis=0) * 1e3
+        self.markers_speed_norm = np.linalg.norm(self.markers_velocity, axis=0) * 1e3
+        self.wrist_marker = self.expe_markers[:, self.experimental_marker_names.index(f"{self.side}_wrist"), :]
+        self.wrist_marker_speed_norm = self.markers_speed_norm[self.experimental_marker_names.index(f"{self.side}_wrist"), :]
+        wrist_norm = np.linalg.norm(self.wrist_marker, axis=0)
+        self.wrist_velocity = np.gradient(wrist_norm, 1 / 30, axis=-1, edge_order=1)
         self.nose_wrist_dist = np.linalg.norm(
             self.expe_markers[:, self.experimental_marker_names.index("nose"), :] - self.wrist_marker, axis=0
         )
         self.join_velocity = np.gradient(self.joint_angles, 1 / self.fps, axis=-1, edge_order=1)
 
     def get_onset_offset(self, threshold=0.05):
-        max = np.max(self.wrist_marker_speed_norm, axis=0)
-        min = np.min(self.wrist_marker_speed_norm, axis=0)
+        half = self.wrist_marker_speed_norm.shape[0] // 2
+        # wrist_tmp = self.wrist_marker_speed_norm - self.wrist_marker_speed_norm[:10].mean()
+        wrist_tmp = abs(self.wrist_velocity)
+        max = np.max(wrist_tmp, axis=0)
+        min = np.min(wrist_tmp, axis=0)
         range = max - min
-        onset_idx = np.where(self.wrist_marker_speed_norm - self.wrist_marker_speed_norm[0] > (threshold * range))[0]
+        onset_idx = np.where(wrist_tmp > (threshold * max))[0]
         if len(onset_idx) == 0:
             onset_idx = 0
         else:
             onset_idx = onset_idx[0]
-        offset_idx = np.where(self.wrist_marker_speed_norm - self.wrist_marker_speed_norm[-1] > (threshold * range))[0]
+
+        # wrist_tmp = self.wrist_marker_speed_norm - self.wrist_marker_speed_norm[-10:].mean()
+        # max = np.max(wrist_tmp, axis=0)
+        # min = np.min(wrist_tmp, axis=0)
+        # range = max - min
+        offset_idx = np.where(wrist_tmp > (threshold * max))[0]
         if len(offset_idx) == 0:
             offset_idx = len(self.wrist_marker_speed_norm) - 1
         else:
@@ -158,6 +170,11 @@ class MotionSegmentation:
         img_paths[1].sort(key=lambda x: int(re.search(pattern, x).group(1)))
         return img_paths
 
+    def _get_phase_time(self, idx_stat, idx_end):
+        time_start = self._time_from_idx(idx_stat)
+        time_end = self._time_from_idx(idx_end)
+        return (time_end - time_start)
+
     def perform_segmentation(
         self,
         threshold_onset=0.05,
@@ -173,7 +190,7 @@ class MotionSegmentation:
             img_paths = self._reorder_paths(img_paths)
             self.get_cup_centers(img_paths, camera, cup_offset=0.05)
             self.get_transporting_event(threshold=threshold_transporting)
-        return {
+        self.segmentation_results = {
             "onset_idx": self.onset_idx,
             "offset_idx": self.offset_idx,
             "drinking_start_idx": self.drinking_start_idx,
@@ -183,50 +200,80 @@ class MotionSegmentation:
             "transport_end_idx": self.transport_end_idx,
             "distance_cup": self.cup_center_start_to_end
         }
+        return self.segmentation_results
+    
+    def save(self, filename):
+        with open(filename, "wb") as f:
+            pickle.dump(self.segmentation_results, f, protocol=pickle.HIGHEST_PROTOCOL)
+        return True
 
-    def plot(self, markers=[], dofs=[], velocity=[]):
+    def plot(self, fps):
+        plt.rcParams['svg.fonttype'] = 'none'
         fig, axs = plt.subplots(4, 1, figsize=(10, 10), sharex=True)
-        time = np.arange(q.shape[1]) / 30
-        axs[0].set_title("Distance between nose and wrist")
-        axs[0].plot(time, self.nose_wrist_dist, label="distance nose-wrist")
-        axs[1].set_title("Wrist speed")
-        axs[1].plot(
-            time, self.markers_speed_norm[experimental_marker_names.index("left_wrist")], label="left wrist exp"
-        )
-        axs[2].set_title("Cup to hand distance")
+        time = np.arange(self.joint_angles.shape[1]) / fps
+        axs[0].set_title("Distance between nose and wrist (mm)")
+        axs[0].plot(time, self.nose_wrist_dist * 1e3, label="distance nose-wrist")
+        axs[1].set_title("Wrist speed (mm/s)")
+        # axs[1].plot(
+        #     time, self.markers_speed_norm[experimental_marker_names.index(f"{self.side}_wrist")]
+        # )
+
+        axs[1].plot(time, self.wrist_velocity)
+
+        axs[2].set_title("Cup to hand distance (mm)")
         axs[2].plot(
             time,
-            np.linalg.norm(self.wrist_marker - self.cup_centers[0].reshape(3, 1), axis=0),
+            np.linalg.norm(self.wrist_marker - self.cup_centers[0].reshape(3, 1), axis=0) * 1e3,
             label="cup to hand start",
         )
         axs[2].plot(
-            time, np.linalg.norm(self.wrist_marker - self.cup_centers[1].reshape(3, 1), axis=0), label="cup to hand end"
+            time, np.linalg.norm(self.wrist_marker - self.cup_centers[1].reshape(3, 1), axis=0) * 1e3, label="cup to hand end"
         )
         axs[2].legend()
-        wrist_acc = np.gradient(self.wrist_marker_speed_norm, 1 / self.fps, edge_order=1)
         # wrist_acc_norm = np.linalg.norm(wrist_acc, axis=0)
         # motion_energy = np.cumsum(np.sum(self.markers_speed_norm**2, axis=0))
-        # axs[3].set_title("Shoulder marker")
+        axs[3].set_title("Elbow_flexion (deg)")
         # axs[3].plot(time, np.linalg.norm(self.expe_markers[:, self.experimental_marker_names.index("left_shoulder")], axis=0), label="left shoulder")
         # axs[3].plot(time, motion_energy, label="left shoulder x")
-        axs[3].plot(time, abs(wrist_acc), label="shoulder velocity")
-        [ax.vlines(time[self.onset_idx], ax.get_ylim()[0], ax.get_ylim()[1], color="red") for ax in axs]
+        elb_flex_name = f'elbow_left_flexion' if self.side == 'left' else f'elbow_flexion'
+        axs[3].plot(time, self.joint_angles[self.joint_names.index(elb_flex_name)] * 180 / np.pi, label=elb_flex_name)
+
+        [ax.vlines(time[self.onset_idx], ax.get_ylim()[0], ax.get_ylim()[1], color="red") for ax in axs]       
         [ax.vlines(time[self.offset_idx], ax.get_ylim()[0], ax.get_ylim()[1], color="red") for ax in axs]
         [ax.vlines(time[self.drinking_start_idx], ax.get_ylim()[0], ax.get_ylim()[1], color="green") for ax in axs]
         [ax.vlines(time[self.drinking_end_idx], ax.get_ylim()[0], ax.get_ylim()[1], color="green") for ax in axs]
         [ax.vlines(time[self.transport_start_idx], ax.get_ylim()[0], ax.get_ylim()[1], color="blue") for ax in axs]
         [ax.vlines(time[self.transport_end_idx], ax.get_ylim()[0], ax.get_ylim()[1], color="blue") for ax in axs]
+
+        # put labels: 
+        reaching_time = self._get_phase_time(self.onset_idx, self.transport_start_idx)
+        transporting_one = self._get_phase_time(self.transport_start_idx, self.drinking_start_idx)
+        drinking_time = self._get_phase_time(self.drinking_start_idx, self.drinking_end_idx)
+        transport_time = self._get_phase_time(self.drinking_end_idx, self.transport_end_idx)
+        motion_end = self._get_phase_time(self.transport_end_idx, self.offset_idx)
+
+
+        [ax.text(time[self.onset_idx], ax.get_ylim()[1], f"Reaching: \n{reaching_time:.2f}s", color="red", verticalalignment="top") for ax in axs]
+        # [ax.text(time[self.offset_idx], ax.get_ylim()[1], f"Offset: {motion_end:.2f}s", color="red", verticalalignment="top") for ax in axs]
+        [ax.text(time[self.drinking_start_idx], ax.get_ylim()[1], f"Drinking: \n{drinking_time:.2f}s", color="green", verticalalignment="top") for ax in axs]
+        [ax.text(time[self.drinking_end_idx], ax.get_ylim()[1], f"Trans.: \n{transport_time:.2f}s", color="green", verticalalignment="top") for ax in axs]
+        [ax.text(time[self.transport_start_idx], ax.get_ylim()[1], f"Trans.: \n{transporting_one:.2f}s", color="blue", verticalalignment="top") for ax in axs]
+        [ax.text(time[self.transport_end_idx], ax.get_ylim()[1], f"Return: \n{motion_end:.2f}s", color="blue", verticalalignment="top") for ax in axs]
+
         plt.show(block=True)
 
 
 if __name__ == "__main__":
     pickle_file = (
-        r"D:\Documents\Programmation\markerless_drinking_task\videos\20260514_112323\annotated\ukf_results.pkl"
+        r"D:\Documents\Programmation\markerless_drinking_task\videos\20260514_112042\annotated\ukf_results.pkl"
     )
     camera_config_file = (
-        r"D:\Documents\Programmation\markerless_drinking_task\videos\20260514_112323\camera_config.json"
+        r"D:\Documents\Programmation\markerless_drinking_task\videos\20260514_112042\camera_config.json"
     )
     res = pickle.load(open(pickle_file, "rb"))
+    # fig = plt.figure()
+    # ax = fig.add_subplot(projection='3d')
+    # ax.scatter(res["keypoints_3d"][..., 0], res["keypoints_3d"][..., 1], res["keypoints_3d"][..., 2], c='r')
     camera = CameraConverter()
     camera.set_intrinsics(camera_config_file)
     camera.set_extrinsics(camera_config_file)
@@ -238,10 +285,10 @@ if __name__ == "__main__":
     estimated_markers = res["model_markers"]
     model_marker_names = res["model_marker_names"]
     experimental_marker_names = res["experimental_marker_names"]
-    segmentation = MotionSegmentation(expe_markers, experimental_marker_names, q, dof_names)
+    segmentation = MotionSegmentation(expe_markers, experimental_marker_names, q, dof_names, side='left')
     segmentation.perform_segmentation(
-        threshold_onset=0.05,
-        threshold_drinking=0.1,
+        threshold_onset=0.08,
+        threshold_drinking=0.15,
         threshold_transporting=0,
         img_paths=(res["color_image_path"], res["depth_image_path"]),
         camera=camera,

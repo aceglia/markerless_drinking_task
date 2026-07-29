@@ -5,7 +5,6 @@ try:
 except:
     pass
 import csv
-import glob
 
 
 class WriteTrc:
