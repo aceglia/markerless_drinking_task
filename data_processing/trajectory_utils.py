@@ -19,7 +19,7 @@ def filter_points_3d(data, cutoff=10, fs=30, order=2):
     return filtered_mat
 
 
-def remove_outliers(keypoints, on_diff=True):
+def remove_outliers(keypoints, on_diff=False):
     filtered = np.zeros_like(keypoints) * np.nan
     if on_diff:
         filtered[-1] = keypoints[-1]
@@ -51,7 +51,7 @@ def fill_gaps(traj):
     return traj_filled
 
 
-def clean_trajectory(keypoints, idxs=None, eps_list=[0.1, 0.08, 0.06, 0.04, 0.02, 0.01]):
+def clean_trajectory(keypoints, idxs=None, eps_list=[0.1, 0.08, 0.06, 0.04, 0.02, 0.01], ratio_threshold=1.5):
     filtered = np.copy(keypoints)
     filtered[filtered == 0] = np.nan
     if idxs is None:
@@ -66,7 +66,7 @@ def clean_trajectory(keypoints, idxs=None, eps_list=[0.1, 0.08, 0.06, 0.04, 0.02
             max_ch_y = np.nanmax(ch_diff_y)
             max_ch = np.nanmax(ch_diff)
             ratio = max_ch / np.min([max_ch_x, max_ch_y]) + 1e-6
-            if ratio > 1:
+            if ratio > ratio_threshold:
                 nan_mask = np.isnan(filtered[:, ch, :]).any(axis=1)
                 valid_data = filtered[:, ch, :][~nan_mask]
                 clustering = DBSCAN(eps=eps, min_samples=5).fit(valid_data)

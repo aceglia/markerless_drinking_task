@@ -9,7 +9,9 @@ from data_processing.motion_segmentation import MotionSegmentation
 if __name__ == "__main__":
     file_dir = r"D:\Documents\Programmation\markerless_drinking_task\videos"
     file_dir = r'F:\CIME_MS\adnane'
-    model_path = r"D:\Documents\Programmation\markerless_drinking_task\opensim\wu_modified_markerless.osim"
+    
+    file_dir = r"C:\Users\neuromobility_lab\Documents\CIME_MS\test_002"
+    model_path = r"C:\Users\neuromobility_lab\Documents\amedeo\dev\markerless_drinking_task\opensim\wu_modified_markerless.osim"
     dirs = os.listdir(file_dir)
     dirs = [os.path.join(file_dir, d) for d in dirs if os.path.isdir(os.path.join(file_dir, d))]
     camera_frames_range = None
@@ -20,9 +22,9 @@ if __name__ == "__main__":
         # with open(file, "rb") as f:
         #     data = pickle.load(f)
         # depth_image_path = dir
-        processor.initialize_data(file_path, dir, os.path.join(dir, "camera_config.json"))
+        processor.initialize_data(file_path, dir, os.path.join(dir, "camera_config.json"), show_pc=False)
         processor.compute_3d_coordinates(track_thorax=True, track_cup=False)
-        processor.post_process(remove_outliers_on_diff=False, plot=False)
+        processor.post_process(remove_outliers_on_diff=False, plot=False, remove_outliers_on_sd=True, cluster_base_filter=True)
         processor.save(export_trc=True)
         keypoints_3d = processor.post_process_3d
         names = processor.keypoints_names
@@ -43,10 +45,10 @@ if __name__ == "__main__":
         experimental_marker_names = ukf.experimental_marker_names
         segmentation = MotionSegmentation(expe_markers, experimental_marker_names, q, dof_names, side=processor.side)
         segmentation.perform_segmentation(
-            threshold_onset=0.08,
+            threshold_onset=0.1,
             threshold_drinking=0.15,
-            threshold_transporting=0,
-            img_paths=(processor.color_image_path, processor.depth_image_path),
+            threshold_transporting=0.1,
+            img_paths=(processor.color_img_path, processor.depth_img_path),
             camera=processor.camera,
         )
         segmentation.save(os.path.join(dir, "annotated", "segmentation.pkl"))

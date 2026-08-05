@@ -1,8 +1,7 @@
 import cv2
-import shutil
-from rtmlib import Wholebody, draw_skeleton, Body, Wholebody3d
+from data_processing.utils_onnrx import Wholebody
 import pyrealsense2 as rs
-from camera_converter import CameraConverter
+from data_processing.camera_converter import CameraConverter
 
 import os
 os.environ["YOLO_VERBOSE"] = 'False'
@@ -16,9 +15,12 @@ wholebody = Wholebody(to_openpose=openpose_skeleton,
                       mode='balanced',  # 'performance', 'lightweight', 'balanced'. Default: 'balanced'
                       backend=backend,
                        device=device)
+
 dir_path = '/mnt/c/Users/Usager/Documents/Amedeo/rgbd_ms_cime/videos/tests_lexie'
+dir_path = r"C:\Users\neuromobility_lab\Documents\CIME_MS\test_002"
 all_bag_files = os.listdir(dir_path)
-all_bag_files_names = [f.removesuffix(".bag") for f in all_bag_files if f.endswith(".bag")]
+all_bag_files_names = [f.removesuffix(".bag") for f in all_bag_files if f.endswith("20260729_113412.bag")]
+
 pipeline = rs.pipeline()
 
 # Create a config object
@@ -35,22 +37,15 @@ for file in all_bag_files_names:
     # Tell config that we will use a recorded device from file to be used by the pipeline through playback.
     config = rs.config()
     rs.config.enable_device_from_file(config, bag_path, repeat_playback=False)
-
-    # Configure the pipeline to stream the depth stream
-    # Change this parameters according to the recorded bag file resolution
-    # config.enable_stream(rs.stream.depth, 848, 480, rs.format.z16, 60)
-    # config.enable_stream(rs.stream.color, 848, 480, rs.format.rgb8, 60)
-
     profile = pipeline.start(config)
     converter = CameraConverter(use_camera=True)
     converter.set_intrinsics(pipeline)
     converter.set_extrinsics(pipeline)
-    converter.set_extrinsics_to_accel(pipeline)
     playback = profile.get_device().as_playback()
     depth_profile = profile.get_stream(rs.stream.depth).as_video_stream_profile()
     accel_profile = profile.get_stream(rs.stream.accel).as_motion_stream_profile()
     playback.set_real_time(False)
-    align_to = rs.stream.depth
+    align_to = rs.stream.color
     align = rs.align(align_to)
     keypoints_mat = None
     os.makedirs(tmp_path + '/annotated', exist_ok=True)
@@ -73,13 +68,17 @@ for file in all_bag_files_names:
             color_frame = frames.get_color_frame()
             depth_raw = np.asanyarray(depth_frame.get_data())
             color_image = cv2.cvtColor(np.asanyarray(color_frame.get_data()), cv2.COLOR_BGR2RGB)
-            # if not os.path.exists(os.path.join(tmp_path, f"color_{frame_number}.png")):
-            cv2.imwrite(os.path.join(tmp_path, f"color_{frame_number}.png"), color_image)
-            cv2.imwrite(os.path.join(tmp_path, f"depth_{frame_number}.png"), depth_raw)
+            if not os.path.exists(os.path.join(tmp_path, f"color_{frame_number}.png")):
+                cv2.imwrite(os.path.join(tmp_path, f"color_{frame_number}.png"), color_image)
+                cv2.imwrite(os.path.join(tmp_path, f"depth_{frame_number}.png"), depth_raw)
             img = color_image
             keypoints, scores = wholebody(img)
+            center = img.shape[0] // 2, img.shape[1] // 2
+            mean_keypoints = keypoints.mean(axis=1)
+            distance = np.linalg.norm(mean_keypoints - center, axis=1)
+            min_dist = np.argmin(distance)
             if not os.path.exists(os.path.join(tmp_path + '/annotated', f"color_{frame_number}_annotated.png")):
-                img = draw_skeleton(img, keypoints[0:1], scores, kpt_thr=0.5)
+                img = wholebody.draw_skeleton(img, keypoints[min_dist:min_dist + 1], scores, kpt_thr=0.5)
                 cv2.imwrite(os.path.join(tmp_path + '/annotated', f"color_{frame_number}_annotated.png"), img)
             idx = np.zeros_like(scores) + frame_number
             global_mat = np.concatenate((keypoints[0], scores[0][:, None], idx[0][:, None]), axis = -1)

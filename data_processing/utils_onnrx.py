@@ -1,7 +1,4 @@
-import cv2
 import os
-import sys
-
 # Automatically detect and add the active Conda environment's library paths
 if "CONDA_PREFIX" in os.environ:
     conda_bin = os.path.join(os.environ["CONDA_PREFIX"], "Library", "bin")
@@ -19,16 +16,12 @@ if hasattr(ort, "preload_dlls"):
     
 from rtmlib import Wholebody, draw_skeleton
 
-device = 'cuda'  # cpu, cuda, mps
-backend = 'onnxruntime'  # opencv, onnxruntime, openvino
-openpose_skeleton = False  # True for openpose-style (required for animals), False for mmpose-style
-wholebody = Wholebody(to_openpose=openpose_skeleton,
-                      mode='balanced',  # 'performance', 'lightweight', 'balanced'. Default: 'balanced'
-                      backend=backend,
-                       device=device)
+class Wholebody(Wholebody):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+    def draw_skeleton(self, image, keypoints, scores, kpt_thr=0.5):
+        return draw_skeleton(image, keypoints, scores, kpt_thr=kpt_thr)
+        
 
-start = 0
-# img = cv2.imread(color_image_path)
-# keypoints, scores = wholebody(img)
-# img = draw_skeleton(img, keypoints[0:1], scores, kpt_thr=0.1)
-# cv2.imwrite(color_image_path + '_annotated.png', img)
+    

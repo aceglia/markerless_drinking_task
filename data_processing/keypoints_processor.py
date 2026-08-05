@@ -34,12 +34,12 @@ class Keypoints3DProcessor:
             self._yolo_model = YOLO("yolo26s.pt", verbose=False)
         return self._yolo_model
 
-    def initialize_data(self, data_path, img_dir, camera):
+    def initialize_data(self, data_path, img_dir, camera, show_pc=False):
         if isinstance(camera, str):
             camera_config_path = camera
             camera = CameraConverter()
-            camera.set_intrinsics(os.path.join(dir, camera_config_path))
-            camera.set_extrinsics(os.path.join(dir, camera_config_path))
+            camera.set_intrinsics(os.path.join(img_dir, camera_config_path))
+            camera.set_extrinsics(os.path.join(img_dir, camera_config_path))
         self.data_path = data_path
         keypoints, idxs = return_unique_keypoints(data_path)
         if self.camera_frames_range is not None:
@@ -53,7 +53,7 @@ class Keypoints3DProcessor:
         self.keypoints_names = self.wholebody.minimal_set
         self._init_img()
         self._check_side()
-        self._prepare_thorax_icp()
+        self._prepare_thorax_icp(show_pc=show_pc)
     
     def _check_side(self):
         keypoints_3d = self._get_3d_keypoints(self.keypoints[0], self.init_depth, idx=0, neighbourhood=5)
@@ -150,9 +150,10 @@ class Keypoints3DProcessor:
             count += 1
         self.keypoints_3d = key_points_mat.copy()
         self.cup_points = cup_points_mat.copy()
+        self.keypoints_names = self.wholebody.minimal_set + [f"virtual_marker_{i}" for i in range(4)]
         return key_points_mat, cup_points_mat
 
-    def _prepare_thorax_icp(self):
+    def _prepare_thorax_icp(self, show_pc=False):
         pc = pc_from_rgbd(self.init_depth, self.init_color, self.camera)
         points_3d = self.camera.get_markers_pos_3d(self.keypoints[0], self.init_depth, in_pixel=False, neighbourhood=5, depth_in_meter=True)
         points_vert = self.camera.align_with_z(points_3d.T)
@@ -223,9 +224,10 @@ class Keypoints3DProcessor:
             extent=np.array([dist_should * 0.8, dist_should, 0.16])  # x, y, z lengths
         )        
         self.thorax_bbox.rotate(self.camera.accel_rotation.T, center=(0, 0, 0))
-        # axes = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.1, origin=closest_point)
-        # axes.rotate(coordinate_frame, center=closest_point)
-        # o3d.visualization.draw_geometries([pc_rot, axes] + self.thorax_spheres + [self.thorax_bbox])
+        if show_pc:
+            axes = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.1, origin=closest_point)
+            axes.rotate(coordinate_frame, center=closest_point)
+            o3d.visualization.draw_geometries([pc] + self.thorax_spheres + [self.thorax_bbox])
 
     def _prepare_cup_icp(self):
         detect_cup_boxes = self._detect_cup(self.init_color)
@@ -274,6 +276,7 @@ class Keypoints3DProcessor:
     def post_process(
         self,
         remove_outliers_on_diff=True,
+        remove_outliers_on_sd=True,
         cluster_base_filter=True,
         lp_filter=True,
         lp_filter_cutoff=4,
@@ -284,9 +287,11 @@ class Keypoints3DProcessor:
         plot=False,
     ):
         post_process_3d = self.keypoints_3d.copy()
-        # side = "right" if self.side == "left" else "left"
+        side = "right" if self.side == "left" else "left"
         side = self.side
         idx_to_plot = [self.wholebody.get_index(name) for name in [f"{side}_shoulder", f"{side}_elbow", f"{side}_wrist"]]
+        idx_to_plot = [self.wholebody.get_index(name) for name in [f"{side}_hand_index1", f"{side}_hand_pinky1", f"{side}_wrist"]]
+
         self.filtering = {"remove_outliers_on_diff": remove_outliers_on_diff,
                            "cluster_base_filter": cluster_base_filter,
                              "lp_filter": lp_filter, 
@@ -294,20 +299,28 @@ class Keypoints3DProcessor:
                              "lp_filter_order": lp_filter_order,
                              "cluster_eps_list": cluster_eps_list,
                              "align_with_z": align_with_z}
-    
+
+        if cluster_base_filter:
+            input = post_process_3d.copy()
+            post_process_3d = clean_trajectory(post_process_3d, idxs=idxs_for_clustering, eps_list=cluster_eps_list, ratio_threshold=3)
+            if plot:
+                plt.figure('After removing on cluster')
+                plt.plot(post_process_3d[:, idx_to_plot, 2])
+                plt.plot(input[:, idx_to_plot, 2], alpha=0.1)
+                
+        if remove_outliers_on_sd:
+            input = post_process_3d.copy()
+            post_process_3d = remove_outliers(post_process_3d, on_diff=False)
+            if plot:
+                plt.figure('After removing outliers on sd')
+                plt.plot(post_process_3d[:, idx_to_plot, 2])
+                plt.plot(input[:, idx_to_plot, 2], alpha=0.1)
+                
         if remove_outliers_on_diff:
             input = post_process_3d.copy()
             post_process_3d = remove_outliers(post_process_3d, on_diff=True)
             if plot:
                 plt.figure('After removing outliers on diff')
-                plt.plot(post_process_3d[:, idx_to_plot, 2])
-                plt.plot(input[:, idx_to_plot, 2], alpha=0.1)
-
-        if cluster_base_filter:
-            input = post_process_3d.copy()
-            post_process_3d = clean_trajectory(post_process_3d, idxs=idxs_for_clustering, eps_list=cluster_eps_list)
-            if plot:
-                plt.figure('After removing on cluster')
                 plt.plot(post_process_3d[:, idx_to_plot, 2])
                 plt.plot(input[:, idx_to_plot, 2], alpha=0.1)
 
@@ -321,8 +334,9 @@ class Keypoints3DProcessor:
                 plt.plot(post_process_3d[:, idx_to_plot, 2])
                 plt.plot(input[:, idx_to_plot, 2], alpha=0.1)
                 plt.show(block=True)
+                
         if align_with_z:
-            post_process_3d = post_process_3d @ self.camera.accel_rotation
+            post_process_3d = self.camera.align_with_z(post_process_3d)
         self.post_process_3d = post_process_3d
         return post_process_3d
 
@@ -334,7 +348,7 @@ class Keypoints3DProcessor:
             "depth_image_path": self.depth_img_path,
             "color_image_path": self.color_img_path,
             "key_points_idxs": self.wholebody.minimal_idxs,
-            "key_points_names": self.wholebody.minimal_set + [f"virtual_marker_{i}" for i in range(4)],
+            "key_points_names": self.keypoints_names,
             "filtering": self.filtering,
             "camera": self.camera.conf_data_dic,
             "side": self.side,

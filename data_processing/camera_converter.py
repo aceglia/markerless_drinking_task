@@ -264,7 +264,7 @@ class CameraConverter:
         """
         _intrinsics = self.depth.get_intrinsics(self.model)
         # markers_in_meters = self._compute_markers(_intrinsics, marker_pos_in_pixel, rs.rs2_deproject_pixel_to_point)
-        if max(marker_pos_in_pixel[2]) > 20:
+        if max(marker_pos_in_pixel[:, 2]) > 20:
             # print("The depth is not in meter. Applying the depth scale to convert it to meter.")
             marker_pos_in_pixel[:, 2] *= self.depth_scale 
 
@@ -287,7 +287,7 @@ class CameraConverter:
         return np.array(markers)
 
     def get_depth_from_pixels(self, pixels_pos, depth, neighbourhood=0, in_meter=True):
-        # if depth is 0 average the depth in a neighbourhood of 5 pixels around the pixel position
+        # if depth is 0 average the depth in a neighbourhood of x pixels around the pixel position
         if not isinstance(pixels_pos, (list, tuple, np.ndarray)):
             pixels_pos = np.array(pixels_pos, dtype=np.int64)
         z = np.ndarray(pixels_pos.shape[0])
@@ -422,8 +422,12 @@ class CameraConverter:
     def align_with_z(self, points):
         if self.accel_rotation is None:
             raise ValueError("Accelerometer rotation matrix is not computed. Please add accelerometer frames first.")
-        return np.dot(self.accel_rotation, points.T).T
-        # return points @ self.accel_rotation
+        return points @ self.accel_rotation.T
+    
+    def align_with_camera(self, points):
+        if self.accel.rotation is None:
+            raise ValueError("Camera rotation matrix is not set. Please set camera extrinsics first.")
+        return points @ self.accel_rotation
 
 def load_json(path):
     with open(path) as json_file:

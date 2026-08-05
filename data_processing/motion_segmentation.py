@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 import re
+from scipy.signal import find_peaks
 
 from camera_converter import CameraConverter
 
@@ -41,30 +42,43 @@ class MotionSegmentation:
         self.join_velocity = np.gradient(self.joint_angles, 1 / self.fps, axis=-1, edge_order=1)
 
     def get_onset_offset(self, threshold=0.05):
-        half = self.wrist_marker_speed_norm.shape[0] // 2
-        # wrist_tmp = self.wrist_marker_speed_norm - self.wrist_marker_speed_norm[:10].mean()
         wrist_tmp = abs(self.wrist_velocity)
-        max = np.max(wrist_tmp, axis=0)
-        min = np.min(wrist_tmp, axis=0)
-        range = max - min
-        onset_idx = np.where(wrist_tmp > (threshold * max))[0]
-        if len(onset_idx) == 0:
+        max_value = np.max(wrist_tmp, axis=0)
+        idxs = np.where(wrist_tmp > (threshold * max_value))[0]
+        if len(idxs) == 0:
             onset_idx = 0
         else:
-            onset_idx = onset_idx[0]
-
-        # wrist_tmp = self.wrist_marker_speed_norm - self.wrist_marker_speed_norm[-10:].mean()
-        # max = np.max(wrist_tmp, axis=0)
-        # min = np.min(wrist_tmp, axis=0)
-        # range = max - min
-        offset_idx = np.where(wrist_tmp > (threshold * max))[0]
-        if len(offset_idx) == 0:
+            onset_idx = self._find_local_minima(wrist_tmp, idxs[0], window=30, backward=True)
+        offset_idx = np.where(wrist_tmp > (threshold * max_value))[0]
+        if len(idxs) == 0:
             offset_idx = len(self.wrist_marker_speed_norm) - 1
         else:
-            offset_idx = offset_idx[-1]
+            offset_idx = self._find_local_minima(wrist_tmp, idxs[-1], window=30, backward=False)
+            
         self.offset_idx = offset_idx
         self.onset_idx = onset_idx
         return onset_idx, offset_idx
+
+    def _find_local_minima(self, data, detection, window=30, backward=True):
+        # check if ascending or descending gradient to find local minima
+        is_ascending = bool(np.all(np.diff(data[detection-2:detection+2]) >= 0))
+
+        if backward:
+            data_tmp = data[int(max(0, detection - window)):detection]
+        else:
+            data_tmp = data[detection:min(len(data), detection + window)]
+        grad = -np.gradient(data_tmp) if not is_ascending else np.gradient(data_tmp)
+        local_minima = np.where(grad < 0)[0]
+        if backward:
+            if len(local_minima) == 0:
+                return int(max(0, detection - window))
+            else:
+                return local_minima[-1] + int(max(0, detection - window))
+        else:
+            if len(local_minima) == 0:
+                return min(len(data), detection + window)
+            else:
+                return local_minima[0] + detection
 
     def get_drinking_event(self, threshold=0.15):
         min_dist_idx = np.argmin(self.nose_wrist_dist)
@@ -99,10 +113,22 @@ class MotionSegmentation:
         results = model(color_img)
         cup_boxes = []
         for result in results:
-            for box in result.boxes:
+            for box in result.boxes:               
                 if model.names[int(box.cls)] == "cup":
                     cup_boxes.append(box.xyxy[0].cpu().numpy())
-        return cup_boxes
+        cup_center = None
+        # check if multiple cups are detected and select the bigest bbox
+        if len(cup_boxes) > 1:
+            cup_areas = [(box[2] - box[0]) * (box[3] - box[1]) for box in cup_boxes]
+            cup_centers = [[(box[0] + box[2]) / 2, (box[1] + box[3]) / 2] for box in cup_boxes]
+            largest_cup_idx = np.argmax(cup_areas)
+            cup_center = np.array(cup_centers[largest_cup_idx]).astype(int)
+        if len(cup_boxes) == 1:
+            box = cup_boxes[0]
+            cup_center = np.array([(box[0] + box[2]) / 2, (box[1] + box[3]) / 2]).astype(int)
+        if cup_center is not None:
+            cup_centers = cup_center 
+        return cup_center
 
     def get_transporting_event(self, threshold=0.15):
         center_to_hand_dist_start = np.linalg.norm(self.wrist_marker - self.cup_centers[0].reshape(3, 1), axis=0)
@@ -122,10 +148,14 @@ class MotionSegmentation:
             idx_start = 0
         else:
             idx_start = idx_start[-1] + self.onset_idx
+            if threshold > 0:
+                idx_start = self._find_local_minima(center_to_hand_dist_start, idx_start, window=30, backward=True)
         if len(idx_end) == 0:
             idx_end = len(center_to_hand_dist_end) - 1
         else:
             idx_end = idx_end[0] + self.drinking_end_idx
+            if threshold > 0:
+                idx_end = self._find_local_minima(center_to_hand_dist_end, idx_end, window=30, backward=False)
         self.transport_start_idx = idx_start
         self.transport_end_idx = idx_end
         return (idx_start, idx_end)
@@ -134,9 +164,8 @@ class MotionSegmentation:
         cup_centers = []
         iterations = 30
         count = 0
-        cup_boxes = []
         for event in [self.onset_idx, self.offset_idx]:
-            while len(cup_boxes) == 0 and count < iterations:
+            while count < iterations:
                 count += 1
                 try:
                     color_img = cv2.imread(img_paths[0][event])
@@ -144,24 +173,20 @@ class MotionSegmentation:
                 except Exception as e:
                     event += 1
                     continue
-                cup_boxes = self._detect_cup(color_img)
-                if len(cup_boxes) == 0:
+                cup_center = self._detect_cup(color_img)
+                if cup_center is None:
                     event += 1
                     continue
-                for box in cup_boxes:
-                    center = (box[0] + box[2]) / 2, (box[1] + box[3]) / 2
-                    center = np.array(center).astype(int)
-                    cup_depth = depth_img[center[1], center[0]] * camera.depth_scale
-                    if cup_depth == 0:
-                        depth_range = depth_img[center[1] - 10 : center[1] + 10, center[0] - 10 : center[0] + 10]
-                        cup_depth = np.mean(depth_range[depth_range > 0]) * camera.depth_scale
-                    center_meters = camera.get_markers_pos_in_meter([np.hstack([center, cup_depth - cup_offset])])
-                    break
+                center_meters = camera.get_markers_pos_3d(cup_center[None], depth_img, 5, depth_in_meter=True, in_pixel=False)
+                center_meters[-1] += cup_offset
+                break
             cup_centers.append(center_meters)
-            cup_boxes = []
             count = 0
-        self.cup_centers = cup_centers
-        return cup_centers
+        if len(cup_centers) > 1:
+            self.cup_centers = camera.align_with_z(np.array(cup_centers).reshape(2, 3))
+        else:
+            self.cup_centers = cup_centers
+        return self.cup_centers
 
     def _reorder_paths(self, img_paths):
         pattern = r"color_(\d+).png"
@@ -207,7 +232,8 @@ class MotionSegmentation:
             pickle.dump(self.segmentation_results, f, protocol=pickle.HIGHEST_PROTOCOL)
         return True
 
-    def plot(self, fps):
+    def plot(self):
+        fps = self.fps
         plt.rcParams['svg.fonttype'] = 'none'
         fig, axs = plt.subplots(4, 1, figsize=(10, 10), sharex=True)
         time = np.arange(self.joint_angles.shape[1]) / fps
@@ -252,9 +278,8 @@ class MotionSegmentation:
         transport_time = self._get_phase_time(self.drinking_end_idx, self.transport_end_idx)
         motion_end = self._get_phase_time(self.transport_end_idx, self.offset_idx)
 
-
         [ax.text(time[self.onset_idx], ax.get_ylim()[1], f"Reaching: \n{reaching_time:.2f}s", color="red", verticalalignment="top") for ax in axs]
-        # [ax.text(time[self.offset_idx], ax.get_ylim()[1], f"Offset: {motion_end:.2f}s", color="red", verticalalignment="top") for ax in axs]
+        [ax.text(time[self.offset_idx], ax.get_ylim()[1], f"Offset: {motion_end:.2f}s", color="red", verticalalignment="top") for ax in axs]
         [ax.text(time[self.drinking_start_idx], ax.get_ylim()[1], f"Drinking: \n{drinking_time:.2f}s", color="green", verticalalignment="top") for ax in axs]
         [ax.text(time[self.drinking_end_idx], ax.get_ylim()[1], f"Trans.: \n{transport_time:.2f}s", color="green", verticalalignment="top") for ax in axs]
         [ax.text(time[self.transport_start_idx], ax.get_ylim()[1], f"Trans.: \n{transporting_one:.2f}s", color="blue", verticalalignment="top") for ax in axs]
@@ -289,7 +314,7 @@ if __name__ == "__main__":
     segmentation.perform_segmentation(
         threshold_onset=0.08,
         threshold_drinking=0.15,
-        threshold_transporting=0,
+        threshold_transporting=0.05,
         img_paths=(res["color_image_path"], res["depth_image_path"]),
         camera=camera,
     )
