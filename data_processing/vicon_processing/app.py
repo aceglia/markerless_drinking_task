@@ -1,9 +1,3 @@
-import csv
-import json
-import os
-import pickle
-import shutil
-import time
 from PyQt5.QtWidgets import (
     QMainWindow,
     QWidget,
@@ -12,9 +6,9 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QFileDialog,
     QGridLayout,
+    QCheckBox,
 )
 from .process_utils import ViconProcessor
-import numpy as np
 
 
 class ViconProcessingApp(QMainWindow):
@@ -60,21 +54,70 @@ class ViconProcessingApp(QMainWindow):
         self.opensim_file_input = QLineEdit()
         self.opensim_file_browse_button = QPushButton("Browse")
         self.opensim_file_browse_button.clicked.connect(self.browse_opensim_file)
-        self.opensim_scale_button = QPushButton("Scale")
-        self.opensim_scale_button.clicked.connect(self.scale_opensim_model)
+
+        self.scale_model_button = QPushButton("Model scaling options")
+        self.scale_model_button.clicked.connect(self.open_model_scaling_options)
 
         file_selection_layout.addWidget(self.opensim_file_label, 3, 0)
         file_selection_layout.addWidget(self.opensim_file_input, 3, 1)
         file_selection_layout.addWidget(self.opensim_file_browse_button, 3, 2)
-        file_selection_layout.addWidget(self.opensim_scale_button, 3, 3)
+        file_selection_layout.addWidget(self.scale_model_button, 3, 3)
 
         self.process_button = QPushButton("Process")
         self.process_button.clicked.connect(self.process_data)
         self.process_button.setEnabled(False)
 
+        self.option_files_label = QLabel("Options File:")
+        self.options_files = QLineEdit()
+        self.options_files_browse_button = QPushButton("Browse")
+        self.options_files_browse_button.clicked.connect(self.browse_options_file)
         file_selection_layout.addWidget(self.process_button, 4, 0, 1, 4)
+        file_selection_layout.addWidget(self.option_files_label, 5, 0)
+        file_selection_layout.addWidget(self.options_files, 5, 1)
+        file_selection_layout.addWidget(self.options_files_browse_button, 5, 2)
 
         self.central_widget.setLayout(file_selection_layout)
+
+    def open_model_scaling_options(self):
+        self.scaling_window = QMainWindow(self)
+        self.scaling_window.setWindowTitle("Model Scaling Options")
+        self.scaling_window.setGeometry(150, 150, 400, 200)
+
+        central_widget = QWidget()
+        layout = QGridLayout()
+
+        self.scale_checkbox = QCheckBox("Scale Model")
+        layout.addWidget(self.scale_checkbox, 0, 0)
+        self.scaling_file_label = QLabel("Trial File:")
+        self.scaling_file_input = QLineEdit()
+        self.scaling_file_browse_button = QPushButton("Browse")
+        self.scaling_file_browse_button.clicked.connect(self.browse_scaling_file)
+        layout.addWidget(self.scaling_file_label, 1, 0)
+        layout.addWidget(self.scaling_file_input, 1, 1)
+        layout.addWidget(self.scaling_file_browse_button, 1, 2)
+
+        self.scaling_options_label = QLabel("Scaling Tool File:")
+        self.scaling_options_input = QLineEdit()
+        self.scaling_options_browse_button = QPushButton("Browse")
+        self.scaling_options_browse_button.clicked.connect(self.browse_scaling_options_file)
+        layout.addWidget(self.scaling_options_label, 2, 0)
+        layout.addWidget(self.scaling_options_input, 2, 1)
+        layout.addWidget(self.scaling_options_browse_button, 2, 2)
+
+        self.scaling_window.setCentralWidget(central_widget)
+        central_widget.setLayout(layout)
+
+        self.scaling_window.show()
+
+    def browse_scaling_file(self):
+        file_path, _ = QFileDialog.getOpenFileName(self, "Select Trial File", "", "trc Files (*.trc);;All Files (*)")
+        if file_path:
+            self.scaling_file_input.setText(file_path)
+
+    def browse_scaling_options_file(self):
+        file_path, _ = QFileDialog.getOpenFileName(self, "Select Scaling Tool File", "", "XML Files (*.xml);;All Files (*)")
+        if file_path:
+            self.scaling_options_input.setText(file_path)
 
     def browse_thorax_file(self):
         file_path, _ = QFileDialog.getOpenFileName(self, "Select Thorax Calibration File", "", "CSV Files (*.csv);;All Files (*)")
@@ -100,6 +143,12 @@ class ViconProcessingApp(QMainWindow):
             self.opensim_file_input.setText(file_path)
             self.check_files_selected()
 
+    def browse_options_file(self):
+        file_path, _ = QFileDialog.getOpenFileName(self, "Select Options File", "", "YAML Files (*.yaml);;All Files (*)")
+        if file_path:
+            self.options_files.setText(file_path)
+            self.check_files_selected()
+
     def check_files_selected(self):
         if (
             self.trials_file_input.text()
@@ -108,15 +157,12 @@ class ViconProcessingApp(QMainWindow):
             self.process_button.setEnabled(True)
         else:
             self.process_button.setEnabled(False)
-
-    def scale_opensim_model(self):
-        pass
-
+        
     def process_data(self):
         if self.processor is None:
-            self.processor = ViconProcessor(self.thorax_calibration_file, self.anato_calibration_file)
-        self.processor.initialize()
-        self.processor.process_trials(self.trials_file_input.text(), self.opensim_file_input.text())
+            self.processor = ViconProcessor()
+        self.processor.initialize(calibration_files=[self.thorax_calibration_file, self.anato_calibration_file], options_file=self.options_files.text())
+        self.processor.batch_process_trials(self.trials_file_input.text(), opensim_model=self.opensim_file_input.text(), scale=self.opensim_scale.isChecked())
 
     def closeEvent(self, event):
         event.accept()

@@ -16,20 +16,23 @@ clusters:
     - hum_p_r
     - hum_d_r
   - - epic_m_r
-    - epic_l_r
+    - epic_lat_r
   arm_l:
   - - hum_a_l
     - hum_p_l
     - hum_d_l
   - - epic_m_l
-    - epic_l_l
-low_pass_filter: true
-filter_cutoff: 6
-filter_order: 4
-fill_gaps: true
-fill_gaps_threshold: 10
-cut_from_events: true
-events:
-- Start
-- Stop
-export_trc: true
+    - epic_lat_l
+options:
+  replace_existing: false
+  lowpass_filter: true
+  filter_cutoff: 6
+  filter_order: 4
+  fill_gaps: true
+  gap_threshold: 10
+  cut_from_events: true
+  replace_existing: false
+  events:
+  - Start
+  - Stop
+  export_trc: true

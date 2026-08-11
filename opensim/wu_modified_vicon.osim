@@ -582,7 +582,7 @@
 								<!--Default appearance for this Geometry-->
 								<Appearance>
 									<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-									<visible>true</visible>
+									<visible>false</visible>
 									<!--The opacity used to display the geometry between 0:transparent, 1:opaque.-->
 									<opacity>0.5</opacity>
 									<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
@@ -1995,7 +1995,7 @@
 								<!--Default appearance for this Geometry-->
 								<Appearance>
 									<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-									<visible>true</visible>
+									<visible>false</visible>
 									<!--The opacity used to display the geometry between 0:transparent, 1:opaque.-->
 									<opacity>0.5</opacity>
 									<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
@@ -2929,7 +2929,7 @@
 					<coordinates>
 						<Coordinate name="thorax_tilt">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>1.8256303550825412</default_value>
 							<!--The speed value of this coordinate before any value has been set. Rotational coordinate value is in rad/s and Translational in m/s.-->
 							<default_speed_value>0</default_speed_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
@@ -2945,7 +2945,7 @@
 						</Coordinate>
 						<Coordinate name="thorax_list">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>1.9592289548741539</default_value>
 							<!--The speed value of this coordinate before any value has been set. Rotational coordinate value is in rad/s and Translational in m/s.-->
 							<default_speed_value>0</default_speed_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
@@ -2961,7 +2961,7 @@
 						</Coordinate>
 						<Coordinate name="thorax_rotation">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>-1.8244696702954888</default_value>
 							<!--The speed value of this coordinate before any value has been set. Rotational coordinate value is in rad/s and Translational in m/s.-->
 							<default_speed_value>0</default_speed_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
@@ -2977,7 +2977,7 @@
 						</Coordinate>
 						<Coordinate name="thorax_tx">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>0.0029104224365873194</default_value>
 							<!--The speed value of this coordinate before any value has been set. Rotational coordinate value is in rad/s and Translational in m/s.-->
 							<default_speed_value>0</default_speed_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
@@ -2993,7 +2993,7 @@
 						</Coordinate>
 						<Coordinate name="thorax_ty">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>0.58507695009400018</default_value>
 							<!--The speed value of this coordinate before any value has been set. Rotational coordinate value is in rad/s and Translational in m/s.-->
 							<default_speed_value>0</default_speed_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
@@ -3009,7 +3009,7 @@
 						</Coordinate>
 						<Coordinate name="thorax_tz">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>0.97658269595781988</default_value>
 							<!--The speed value of this coordinate before any value has been set. Rotational coordinate value is in rad/s and Translational in m/s.-->
 							<default_speed_value>0</default_speed_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
@@ -3147,7 +3147,7 @@
 					<coordinates>
 						<Coordinate name="neck_flexion">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>5.4880876989686729e-11</default_value>
+							<default_value>0</default_value>
 							<!--The speed value of this coordinate before any value has been set. Rotational coordinate value is in rad/s and Translational in m/s.-->
 							<default_speed_value>0</default_speed_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
@@ -3177,7 +3177,7 @@
 						</Coordinate>
 						<Coordinate name="neck_rotation">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>3.6589128766844671e-10</default_value>
+							<default_value>0</default_value>
 							<!--The speed value of this coordinate before any value has been set. Rotational coordinate value is in rad/s and Translational in m/s.-->
 							<default_speed_value>0</default_speed_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
@@ -3313,7 +3313,7 @@
 					<coordinates>
 						<Coordinate name="sternoclavicular_r1">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>0.16401025567199862</default_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
 							<range>-0.69999999999999996 0.69999999999999996</range>
 							<!--Flag indicating whether or not the values of the coordinates should be limited to the range, above.-->
@@ -3325,7 +3325,7 @@
 						</Coordinate>
 						<Coordinate name="sternoclavicular_r2">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>-0.16625412267136003</default_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
 							<range>-0.34999999999999998 0.69999999999999996</range>
 							<!--Flag indicating whether or not the values of the coordinates should be limited to the range, above.-->
@@ -3617,7 +3617,7 @@
 					<coordinates>
 						<Coordinate name="shoulder_plane">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>-1.0960485306216503</default_value>
 							<!--The speed value of this coordinate before any value has been set. Rotational coordinate value is in rad/s and Translational in m/s.-->
 							<default_speed_value>5.3429242439434002e-15</default_speed_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
@@ -3633,7 +3633,7 @@
 						</Coordinate>
 						<Coordinate name="shoulder_ele">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>1.1557091963497588</default_value>
 							<!--The speed value of this coordinate before any value has been set. Rotational coordinate value is in rad/s and Translational in m/s.-->
 							<default_speed_value>0</default_speed_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
@@ -3649,7 +3649,7 @@
 						</Coordinate>
 						<Coordinate name="shoulder_rotation">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>1.1356930474660512</default_value>
 							<!--The speed value of this coordinate before any value has been set. Rotational coordinate value is in rad/s and Translational in m/s.-->
 							<default_speed_value>1.00020870681876e-14</default_speed_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
@@ -3787,7 +3787,7 @@
 					<coordinates>
 						<Coordinate name="elbow_flexion">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>1.3459075511137586</default_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
 							<range>0 2.5</range>
 							<!--Flag indicating whether or not the values of the coordinates should be limited to the range, above.-->
@@ -3911,7 +3911,7 @@
 					<coordinates>
 						<Coordinate name="pro_sup">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>0.39503690888729592</default_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
 							<range>-1.9198599999999999 1.8999999999999999</range>
 							<!--Flag indicating whether or not the values of the coordinates should be limited to the range, above.-->
@@ -4035,7 +4035,7 @@
 					<coordinates>
 						<Coordinate name="hand_r_Add">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>0.042287811852156687</default_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
 							<range>-1.2 1.2</range>
 							<!--Flag indicating whether or not the values of the coordinates should be limited to the range, above.-->
@@ -4047,7 +4047,7 @@
 						</Coordinate>
 						<Coordinate name="hand_r_Flex">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>-0.10031877372215552</default_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
 							<range>-1 1.3962600000000001</range>
 							<!--Flag indicating whether or not the values of the coordinates should be limited to the range, above.-->
@@ -4166,7 +4166,7 @@
 					<coordinates>
 						<Coordinate name="sternoclavicular_left_r1">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>0.028025290375748801</default_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
 							<range>-0.69999999999999996 0.69999999999999996</range>
 							<!--Flag indicating whether or not the values of the coordinates should be limited to the range, above.-->
@@ -4178,7 +4178,7 @@
 						</Coordinate>
 						<Coordinate name="sternoclavicular_left_r2">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>-0.0086719686149756055</default_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
 							<range>-0.34999999999999998 0.69999999999999996</range>
 							<!--Flag indicating whether or not the values of the coordinates should be limited to the range, above.-->
@@ -4470,7 +4470,7 @@
 					<coordinates>
 						<Coordinate name="shoulder_left_plane">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>-0.94960192967589796</default_value>
 							<!--The speed value of this coordinate before any value has been set. Rotational coordinate value is in rad/s and Translational in m/s.-->
 							<default_speed_value>5.3429242439434002e-15</default_speed_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
@@ -4486,7 +4486,7 @@
 						</Coordinate>
 						<Coordinate name="shoulder_left_ele">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>1.1664047235946797</default_value>
 							<!--The speed value of this coordinate before any value has been set. Rotational coordinate value is in rad/s and Translational in m/s.-->
 							<default_speed_value>0</default_speed_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
@@ -4502,7 +4502,7 @@
 						</Coordinate>
 						<Coordinate name="shoulder_left_rotation">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>1.1355541416167088</default_value>
 							<!--The speed value of this coordinate before any value has been set. Rotational coordinate value is in rad/s and Translational in m/s.-->
 							<default_speed_value>1.00020870681876e-14</default_speed_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
@@ -4640,7 +4640,7 @@
 					<coordinates>
 						<Coordinate name="elbow_left_flexion">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>1.3914490873034924</default_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
 							<range>0 2.7000000000000002</range>
 							<!--Flag indicating whether or not the values of the coordinates should be limited to the range, above.-->
@@ -4764,7 +4764,7 @@
 					<coordinates>
 						<Coordinate name="pro_sup_left">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>0.71127055418549623</default_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
 							<range>-1.5700000000000001 1.5700000000000001</range>
 							<!--Flag indicating whether or not the values of the coordinates should be limited to the range, above.-->
@@ -4888,7 +4888,7 @@
 					<coordinates>
 						<Coordinate name="hand_left_Flex">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>-0.066506551615077181</default_value>
 							<!--The speed value of this coordinate before any value has been set. Rotational coordinate value is in rad/s and Translational in m/s.-->
 							<default_speed_value>0</default_speed_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
@@ -4904,7 +4904,7 @@
 						</Coordinate>
 						<Coordinate name="hand_left_Add">
 							<!--The value of this coordinate before any value has been set. Rotational coordinate value is in radians and Translational in meters.-->
-							<default_value>0</default_value>
+							<default_value>-0.040798637701912284</default_value>
 							<!--The speed value of this coordinate before any value has been set. Rotational coordinate value is in rad/s and Translational in m/s.-->
 							<default_speed_value>0</default_speed_value>
 							<!--The minimum and maximum values that the coordinate can range between. Rotational coordinate range in radians and Translational in meters.-->
@@ -5031,1768 +5031,252 @@
 		</ConstraintSet>
 		<!--Forces in the model (includes Actuators).-->
 		<ForceSet name="forceset">
-			<objects>
-				<Thelen2003Muscle name="LVS">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="LVS-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.037153800000000001 0.094160999999999995 0.0224777</location>
-								</PathPoint>
-								<PathPoint name="LVS-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.077665200000000004 0.00077190500000000003 -0.109819</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects />
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>169.95639725599801</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.143731700550492</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.0050820046023458297</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="TRPsup">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="TRP1-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.058787300000000001 0.096565899999999996 0.00191913</location>
-								</PathPoint>
-								<PathPoint name="TRP1-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/clavicle</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.029441100000000001 0.0239066 0.094542399999999999</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects>
-								<PathWrap name="pathwrap">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>SpineCyl</wrap_object>
-								</PathWrap>
-							</objects>
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>280.56713981164</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.101372097423046</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.015184065205996701</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="TRPsup_bis">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="TRP2-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.077244999999999994 0.0313656 0.0035586699999999999</location>
-								</PathPoint>
-								<PathPoint name="TRP2-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.044775599999999999 -0.0029640299999999999 -0.0114809</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects>
-								<PathWrap name="pathwrap">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>SpineCyl2</wrap_object>
-								</PathWrap>
-							</objects>
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>162.449964047061</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.083719936652882299</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.042012560156904903</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="TRPmed">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="TRP3-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.091895400000000002 -0.0153597 0.0024986700000000001</location>
-								</PathPoint>
-								<PathPoint name="TRP3-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.066984399999999999 -0.0074735599999999998 -0.050993400000000001</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects />
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>155.28316683500699</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.072466067613824001</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.017628862904662802</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="TRPinf">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="TRP4-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.11564099999999999 -0.105255 0.00068162099999999998</location>
-								</PathPoint>
-								<PathPoint name="TRP4-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.090919700000000006 -0.0148608 -0.090584700000000004</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects>
-								<PathWrap name="pathwrap">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>SpineCyl3</wrap_object>
-									<!--The wrapping method used to solve the path around the wrap object.-->
-									<method>hybrid</method>
-									<!--The range of indices to use to compute the path over the wrap object.-->
-									<range>-1 -1</range>
-								</PathWrap>
-							</objects>
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>557.24345537557701</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.116791618177899</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.0045546041716623504</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="RMN">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="RMN-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.062815300000000004 0.055797699999999999 0.0029912099999999998</location>
-								</PathPoint>
-								<PathPoint name="RMN-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.090764800000000007 -0.015101099999999999 -0.115107</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects>
-								<PathWrap name="pathwrap">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>SpineCyl2_RMN</wrap_object>
-								</PathWrap>
-							</objects>
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>301.61706145578802</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.14278991299999999</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.024760448000000001</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="RMJ1">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="RMJ1-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.0788272 0.0094123699999999998 0.00142958</location>
-								</PathPoint>
-								<PathPoint name="RMJ1-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.10372099999999999 -0.048523499999999997 -0.119606</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects>
-								<PathWrap name="pathwrap">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>SpineCyl3_RMJ1</wrap_object>
-								</PathWrap>
-							</objects>
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>185.935898822876</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.14925746938699999</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.016865656</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="RMJ2">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="RMJ2-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.086745000000000058 -0.024926700000000024 0.0014295799999999859</location>
-								</PathPoint>
-								<PathPoint name="RMJ2-P2_0">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.11480899999999999 -0.114 -0.11136500000000001</location>
-								</PathPoint>
-							</objects>
-							<groups />
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects>
-								<PathWrap name="pathwrap_0">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>SpineCyl3_RMJ2_1</wrap_object>
-									<!--The wrapping method used to solve the path around the wrap object.-->
-									<method>hybrid</method>
-								</PathWrap>
-								<PathWrap name="pathwrap">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>SpineCyl3_RMJ2</wrap_object>
-								</PathWrap>
-							</objects>
-							<groups />
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>111.570078855478</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.13799097929900001</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.047155270070094797</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="SRA1">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="SRA1-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.00094126400000000003 -0.056001700000000001 0.119468</location>
-								</PathPoint>
-								<PathPoint name="SRA1-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.10086000000000001 -0.054243399999999997 -0.113174</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects>
-								<PathWrap name="pathwrap">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>SRACyl</wrap_object>
-								</PathWrap>
-							</objects>
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>365.11775335508798</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.085665994999999995</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.070174999000000002</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="SRA2">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="SRA2-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.00062408799999999996 -0.101712 0.13742099999999999</location>
-								</PathPoint>
-								<PathPoint name="SRA2-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.106888 -0.071514900000000006 -0.113108</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects>
-								<PathWrap name="pathwrap">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>SRACyl_SRA2</wrap_object>
-									<!--The wrapping method used to solve the path around the wrap object.-->
-									<method>hybrid</method>
-									<!--The range of indices to use to compute the path over the wrap object.-->
-									<range>-1 2</range>
-								</PathWrap>
-								<PathWrap name="pathwrap_0">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>SRACyl_SRA2_2</wrap_object>
-									<!--The wrapping method used to solve the path around the wrap object.-->
-									<method>hybrid</method>
-									<!--The range of indices to use to compute the path over the wrap object.-->
-									<range>1 -1</range>
-								</PathWrap>
-							</objects>
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>179.96260532400399</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.100106634</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.037804872000000003</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="SRA3">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="SRA3-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.011340100000000001 -0.16134299999999999 0.14843200000000001</location>
-								</PathPoint>
-								<PathPoint name="SRA3-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.111231 -0.088884000000000005 -0.112791</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects>
-								<PathWrap name="pathwrap">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>ThoraxSRA2</wrap_object>
-									<!--The wrapping method used to solve the path around the wrap object.-->
-									<method>hybrid</method>
-								</PathWrap>
-							</objects>
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>377.92166433725902</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.15263369597000001</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.0093223680884982098</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="SBCL">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="SBCL-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.000925142 -0.0131603 0.039011499999999998</location>
-								</PathPoint>
-								<PathPoint name="SBCL-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/clavicle</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.0151524 0.0087419999999999998 0.072847200000000001</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects />
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>195.80764894274199</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.023171019023900001</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.042247568995307003</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="PMN">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="PMN-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.032349900000000001 -0.074858099999999997 0.089155999999999999</location>
-								</PathPoint>
-								<PathPoint name="PMN-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.0137771 -0.047381800000000002 -0.030447399999999999</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>218.72293530659101</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.118119502995</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.0043165675121904397</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="DELTant">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="DELT1-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/clavicle</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.023254799999999999 0.018555200000000001 0.095271900000000007</location>
-								</PathPoint>
-								<PathPoint name="DELT1-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/clavicle</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.0022195399999999999 0.0303141 0.12567999999999999</location>
-								</PathPoint>
-								<PathPoint name="DELT1-P3">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.0045457500000000003 -0.103644 0.0077324300000000002</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects />
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>556.79999999999995</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.177910005053001</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.031784150446112699</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0.383972435439</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="DELTmed">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="DELT2-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.031606299999999997 -0.0036764300000000001 0.0016375700000000001</location>
-								</PathPoint>
-								<PathPoint name="DELT2-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.031735699999999999 -0.00555618 0.0210803</location>
-								</PathPoint>
-								<PathPoint name="DELT2-P3">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.0034899900000000001 -0.057778000000000003 0.028278000000000001</location>
-								</PathPoint>
-								<PathPoint name="DELT2-P4">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.0045457500000000003 -0.103644 0.0077324300000000002</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects />
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>1098.4000000000001</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.13724674129939601</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.048629915164505398</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0.26179938779900003</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="DELTpost">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="DELT3-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.067809300000000003 -0.0018010299999999999 -0.044156399999999998</location>
-								</PathPoint>
-								<PathPoint name="DELT3-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.0828787 -0.027232900000000001 0.0068624799999999998</location>
-								</PathPoint>
-								<PathPoint name="DELT3-P3">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.018530000000000001 -0.049556299999999998 0.0058833399999999999</location>
-								</PathPoint>
-								<PathPoint name="DELT3-P4">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.0045457500000000003 -0.103644 0.0077324300000000002</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects />
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>944.70000000000005</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.13230621500511799</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.105047686995106</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0.31415926535900002</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="SUPSP">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="SUPSP-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.076967999999999995 -0.0133058 -0.074049000000000004</location>
-								</PathPoint>
-								<PathPoint name="SUPSP-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.064499500000000001 -0.0015351 -0.046731799999999997</location>
-								</PathPoint>
-								<PathPoint name="SUPSP-P3">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.0035553500000000001 0.031139799999999999 0.0055013299999999996</location>
-								</PathPoint>
-								<PathPoint name="SUPSP-P4">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.014213099999999999 0.016794900000000001 0.020882399999999999</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects>
-								<PathWrap name="pathwrap">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>SUPSP</wrap_object>
-									<!--The wrapping method used to solve the path around the wrap object.-->
-									<method>hybrid</method>
-								</PathWrap>
-							</objects>
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>410.69999999999999</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.129763403133517</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.027623454057607098</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0.12217304764</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="INFSP">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="INFSP-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.10101499999999999 -0.062631699999999998 -0.079624</location>
-								</PathPoint>
-								<PathPoint name="INFSP-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.048982100000000001 -0.055665899999999997 -0.025148899999999998</location>
-								</PathPoint>
-								<PathPoint name="INFSP-P3">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.0050826300000000003 0.0080172999999999998 0.0263193</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects>
-								<PathWrap name="pathwrap">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>INFSPCyl</wrap_object>
-									<!--The range of indices to use to compute the path over the wrap object.-->
-									<range>-1 2</range>
-								</PathWrap>
-								<PathWrap name="pathwrap_0">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>INFSP_and_TMIN_hum</wrap_object>
-									<!--The range of indices to use to compute the path over the wrap object.-->
-									<range>2 -1</range>
-								</PathWrap>
-							</objects>
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>864.60000000000002</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.14804083334427101</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.037709569793665403</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0.32288591161899999</pennation_angle_at_optimal>
-					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
-					<ignore_tendon_compliance>false</ignore_tendon_compliance>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="SUBSC">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="SUBSC-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.082662700000000006 -0.044775599999999999 -0.074626100000000001</location>
-								</PathPoint>
-								<PathPoint name="SUBSC-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.044900599999999999 -0.037069600000000001 -0.0383135</location>
-								</PathPoint>
-								<PathPoint name="SUBSC-P3">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.0074096500000000003 0.0103442 -0.022619</location>
-								</PathPoint>
-								<PathPoint name="SUBSC-P4">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.019940900000000001 -0.0082873700000000005 -0.0017436000000000001</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects />
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>944.29999999999995</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.181640690467335</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.0083474582016238308</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0.34906585039900001</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="TMIN">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="TMIN-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.094144099999999994 -0.077474600000000005 -0.046992199999999998</location>
-								</PathPoint>
-								<PathPoint name="TMIN-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.086128700000000002 -0.060448000000000002 -0.011788399999999999</location>
-								</PathPoint>
-								<PathPoint name="TMIN-P3">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.0084524600000000002 -0.014135200000000001 0.026806099999999999</location>
-								</PathPoint>
-								<PathPoint name="TMIN-P4">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.0065371099999999996 -0.0036434599999999998 0.021614600000000001</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects />
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>605.39999999999998</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.050520272237396503</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.115761683404895</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0.418879020479</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="TMAJ">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="TMAJ-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.120216 -0.12371500000000001 -0.081693199999999994</location>
-								</PathPoint>
-								<PathPoint name="TMAJ-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.052068200000000002 -0.121946 -0.0028375499999999999</location>
-								</PathPoint>
-								<PathPoint name="TMAJ-P3">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.0036881599999999998 -0.044868100000000001 -0.0067432200000000003</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects />
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>234.90000000000001</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.163131932244024</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.063113723065591307</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0.27925268031900002</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="PECM1">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="PECM1-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/clavicle</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.0010636300000000001 0.0058533700000000001 0.0493812</location>
-								</PathPoint>
-								<PathPoint name="PECM1-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/clavicle</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.00046746199999999998 0.0053598099999999996 0.056924000000000002</location>
-								</PathPoint>
-								<PathPoint name="PECM1-P3">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.015953100000000001 -0.040377000000000003 0.0049853400000000004</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<!--All properties of this object have their default values.-->
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>983.39999999999998</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.103911818135664</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.048661144102554801</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0.29670597283900002</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="PECM2">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="PECM2-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.0247929 -0.047443699999999998 0.017415199999999999</location>
-								</PathPoint>
-								<PathPoint name="PECM2-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.0421932 -0.043343800000000002 0.080575599999999997</location>
-								</PathPoint>
-								<PathPoint name="PECM2-P3">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.015953100000000001 -0.035391699999999998 0.0049853400000000004</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects />
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>699.70000000000005</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.13751460503087001</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.093804605574629302</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0.43633231299899999</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="PECM3">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="PECM3-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.062470600000000001 -0.14732600000000001 0.021995500000000001</location>
-								</PathPoint>
-								<PathPoint name="PECM3-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.043141400000000003 -0.092788200000000001 0.082590200000000003</location>
-								</PathPoint>
-								<PathPoint name="PECM3-P3">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.015953100000000001 -0.0299121 0.0049853400000000004</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects />
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>446.69999999999999</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.17625197259630701</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.096049061734777397</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0.43633231299899999</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="LAT">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="LAT-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.094424400000000006 -0.160526 0.00051064299999999997</location>
-								</PathPoint>
-								<PathPoint name="LAT-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.0020154000000000001 -0.018835399999999999 -0.0214022</location>
-								</PathPoint>
-								<PathPoint name="LAT-P3">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.00988845 -0.022268199999999998 -0.0087961399999999992</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects>
-								<PathWrap name="pathwrap">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>ThoraxLAT</wrap_object>
-									<!--The wrapping method used to solve the path around the wrap object.-->
-									<method>hybrid</method>
-									<!--The range of indices to use to compute the path over the wrap object.-->
-									<range>-1 -1</range>
-								</PathWrap>
-							</objects>
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>1129.7</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.226108380105393</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.075141757738952195</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0.33161255787900001</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="CORB">
-					<!--Flag indicating whether the force is applied or not. If true the forceis applied to the MultibodySystem otherwise the force is not applied.NOTE: Prior to OpenSim 4.0, this behavior was controlled by the 'isDisabled' property, where 'true' meant that force was not being applied. Thus, if 'isDisabled' is true, then 'appliesForce` is false.-->
-					<appliesForce>true</appliesForce>
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="CORB-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.0143512 -0.047381800000000002 -0.030447399999999999</location>
-								</PathPoint>
-								<PathPoint name="CORB-P3">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0 -0.12762499999999999 -0.0116252</location>
-								</PathPoint>
-							</objects>
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects>
-								<PathWrap name="pathwrap">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>CORBhum</wrap_object>
-								</PathWrap>
-								<PathWrap name="pathwrap_0">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>TMAJ_LAT_PEC_CORBhh</wrap_object>
-								</PathWrap>
-							</objects>
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>306.89999999999998</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.083431382459823303</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.061671033909605003</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="bic_l">
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="bic_l-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.013599999999999999 -0.025100000000000001 -0.0218</location>
-								</PathPoint>
-								<PathPoint name="bic_l-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.014999999999999999 0.01 0.014999999999999999</location>
-								</PathPoint>
-								<PathPoint name="bic_l-P3">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/radius</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.00091399999999999999 -0.037638999999999999 -0.003846</location>
-								</PathPoint>
-							</objects>
-							<groups />
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects>
-								<PathWrap name="pathwrap">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>WP_humerus_torus_BICl</wrap_object>
-									<!--The wrapping method used to solve the path around the wrap object.-->
-									<method>hybrid</method>
-									<!--The range of indices to use to compute the path over the wrap object.-->
-									<range>-1 2</range>
-								</PathWrap>
-								<PathWrap name="pathwrap_0">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>WP_humerus_torus_middle</wrap_object>
-									<!--The wrapping method used to solve the path around the wrap object.-->
-									<method>hybrid</method>
-									<!--The range of indices to use to compute the path over the wrap object.-->
-									<range>2 3</range>
-								</PathWrap>
-								<PathWrap name="pathwrap_1">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>Elbow_BIC_BRD</wrap_object>
-									<!--The wrapping method used to solve the path around the wrap object.-->
-									<method>hybrid</method>
-									<!--The range of indices to use to compute the path over the wrap object.-->
-									<range>-1 -1</range>
-								</PathWrap>
-							</objects>
-							<groups />
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>700</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.14469879283957901</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.26151058922632903</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="bic_b">
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="bic_b-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.011820000000000001 -0.040939999999999997 -0.024830000000000001</location>
-								</PathPoint>
-								<PathPoint name="bic_b-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/radius</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.00091399999999999999 -0.037638999999999999 -0.003846</location>
-								</PathPoint>
-							</objects>
-							<groups />
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects>
-								<PathWrap name="pathwrap">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>WP_humerus_torus_middle_b</wrap_object>
-									<!--The wrapping method used to solve the path around the wrap object.-->
-									<method>hybrid</method>
-									<!--The range of indices to use to compute the path over the wrap object.-->
-									<range>-1 -1</range>
-								</PathWrap>
-								<PathWrap name="pathwrap_0">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>Elbow_BIC_BRD_b</wrap_object>
-									<!--The wrapping method used to solve the path around the wrap object.-->
-									<method>hybrid</method>
-									<!--The range of indices to use to compute the path over the wrap object.-->
-									<range>-1 -1</range>
-								</PathWrap>
-							</objects>
-							<groups />
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>894</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.1308</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.2165</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="tric_long">
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="tric_long-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.045508 -0.044998000000000003 -0.011820000000000001</location>
-								</PathPoint>
-								<PathPoint name="tric_long-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.022605 -0.28000000000000003 -0.0145687</location>
-								</PathPoint>
-								<PathPoint name="tric_long-P3">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/ulna</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.027813999999999998 -0.0091280000000000007 -0.00083900000000000001</location>
-								</PathPoint>
-							</objects>
-							<groups />
-						</PathPointSet>
-						<!--The wrap objects that are associated with this path-->
-						<PathWrapSet>
-							<objects>
-								<PathWrap name="pathwrap">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>TRIlonghh</wrap_object>
-									<!--The wrapping method used to solve the path around the wrap object.-->
-									<method>hybrid</method>
-									<!--The range of indices to use to compute the path over the wrap object.-->
-									<range>-1 -1</range>
-								</PathWrap>
-								<PathWrap name="pathwrap_0">
-									<!--A WrapObject that this PathWrap interacts with.-->
-									<wrap_object>WP_ulna_TRI</wrap_object>
-									<!--The wrapping method used to solve the path around the wrap object.-->
-									<method>hybrid</method>
-									<!--The range of indices to use to compute the path over the wrap object.-->
-									<range>-1 -1</range>
-								</PathWrap>
-							</objects>
-							<groups />
-						</PathWrapSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>2216</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.1167</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.23380000000000001</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0.17453293</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="tric_lat">
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="tric_lat-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.0065191900000000002 -0.137632 0.00465811</location>
-								</PathPoint>
-								<PathPoint name="tric_lat-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.026578067725514146 -0.26743797534140834 -0.011438500405773379</location>
-								</PathPoint>
-								<PathPoint name="tric_lat-P3">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/ulna</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.0220302 0.0105221 -0.00078463600000000001</location>
-								</PathPoint>
-							</objects>
-							<groups />
-						</PathPointSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>624.29999999999995</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.086300000000000002</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.1017</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0.17000000000000001</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-				<Thelen2003Muscle name="tric_med">
-					<!--The path of the actuator which defines length and lengthening speed.-->
-					<GeometryPath name="path">
-						<!--Default appearance attributes for this AbstractGeometryPath.-->
-						<Appearance>
-							<!--Flag indicating whether the associated Geometry is visible or hidden.-->
-							<visible>false</visible>
-							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.10000000000000001 0.10000000000000001</color>
-						</Appearance>
-						<!--The set of points defining the path-->
-						<PathPointSet>
-							<objects>
-								<PathPoint name="tric_med-P1">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.0091203099999999995 -0.14904800000000001 -0.0098603800000000002</location>
-								</PathPoint>
-								<PathPoint name="tric_med-P2">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.0346529 -0.246369 -0.0132452</location>
-								</PathPoint>
-								<PathPoint name="tric_med-P3">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.029846592126185036 -0.27348564976605827 -0.01314719974599732</location>
-								</PathPoint>
-								<PathPoint name="tric_med-P4">
-									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
-									<socket_parent_frame>/bodyset/ulna</socket_parent_frame>
-									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.022026869065905907 -0.0061277948921212196 -0.00078463601452789138</location>
-								</PathPoint>
-							</objects>
-							<groups />
-						</PathPointSet>
-					</GeometryPath>
-					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>624.29999999999995</max_isometric_force>
-					<!--Optimal length of the muscle fibers-->
-					<optimal_fiber_length>0.086099999999999996</optimal_fiber_length>
-					<!--Resting length of the tendon-->
-					<tendon_slack_length>0.094100000000000003</tendon_slack_length>
-					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
-					<pennation_angle_at_optimal>0.157</pennation_angle_at_optimal>
-				</Thelen2003Muscle>
-			</objects>
-			<groups>
-				<ObjectGroup name="new_Mick">
-					<members> bic_l bic_b tric_long</members>
-				</ObjectGroup>
-				<ObjectGroup name="Scapulothoracic">
-					<members> SBCL SRA1 SRA2 SRA3 LVS RMN RMJ1 RMJ2 PMN</members>
-				</ObjectGroup>
-				<ObjectGroup name="Glenohumeral">
-					<members> INFSP LAT PECM1 PECM2 PECM3 SUBSC SUPSP TMAJ TMIN CORB</members>
-				</ObjectGroup>
-			</groups>
+			<objects />
 		</ForceSet>
 		<!--Markers in the model.-->
 		<MarkerSet name="markerset">
 			<objects>
-				<Marker name="nose">
+				<Marker name="ster">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
-					<socket_parent_frame>/bodyset/head</socket_parent_frame>
+					<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>0.10929277775527127 0.5467183794597521 -0.0012376549958044137</location>
+					<location>0.014463352333075993 -0.0029778360881305057 -0.00051581391852121336</location>
 					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
 					<fixed>false</fixed>
 				</Marker>
-				<Marker name="left_eye">
+				<Marker name="xiph">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
-					<socket_parent_frame>/bodyset/head</socket_parent_frame>
+					<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>0.088674795196024184 0.56138476310686558 -0.031568860545995933</location>
+					<location>0.075424896974444405 -0.16858528820243618 0.00061731153879048754</location>
 					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
 					<fixed>false</fixed>
 				</Marker>
-				<Marker name="right_eye">
+				<Marker name="c7">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
-					<socket_parent_frame>/bodyset/head</socket_parent_frame>
+					<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>0.077185863484476661 0.5549690948999304 0.026887736297994399</location>
+					<location>-0.096072721840985392 0.054656186321913103 -0.0018554533472824803</location>
 					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
 					<fixed>false</fixed>
 				</Marker>
-				<Marker name="left_shoulder">
+				<Marker name="t10">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
-					<socket_parent_frame>/bodyset/humerus_left</socket_parent_frame>
+					<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>0.035772504817083009 0.0090591554298674586 -0.018548251584313988</location>
+					<location>-0.12408655164887315 -0.17972188882801987 0.00048891928915491538</location>
 					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
 					<fixed>false</fixed>
 				</Marker>
-				<Marker name="right_shoulder">
-					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
-					<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
-					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>0.032179692460173839 0.004310026143132902 -0.031602429016378442</location>
-					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
-					<fixed>false</fixed>
-				</Marker>
-				<Marker name="left_elbow">
-					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
-					<socket_parent_frame>/bodyset/humerus_left</socket_parent_frame>
-					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>0.025610919962922109 -0.26745558737864211 -0.0044299105783860548</location>
-					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
-					<fixed>false</fixed>
-				</Marker>
-				<Marker name="right_elbow">
+				<Marker name="epic_lat_r">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
 					<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>0.023777381495329229 -0.27883618081971595 -0.018309617429114119</location>
+					<location>-0.0094649399999999998 -0.27348699999999998 0.0307692</location>
 					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
 					<fixed>false</fixed>
 				</Marker>
-				<Marker name="left_wrist">
+				<Marker name="epic_m_r">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
-					<socket_parent_frame>/bodyset/radius_left</socket_parent_frame>
+					<socket_parent_frame>/bodyset/humerus</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>0.021040006681474304 -0.23542451667245473 -0.043826528273303716</location>
+					<location>0.011883899999999999 -0.28972100000000001 -0.049107999999999999</location>
 					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
 					<fixed>false</fixed>
 				</Marker>
-				<Marker name="right_wrist">
+				<Marker name="styl_r_r">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
 					<socket_parent_frame>/bodyset/radius</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>0.025345467369976303 -0.22302902327278024 0.046087767207976638</location>
+					<location>0.0519996 -0.231152 0.020723700000000001</location>
 					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
 					<fixed>false</fixed>
 				</Marker>
-				<Marker name="right_hand_index1">
+				<Marker name="styl_u_r">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
-					<socket_parent_frame>/bodyset/hand_r</socket_parent_frame>
+					<socket_parent_frame>/bodyset/radius</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>0.023640986493057441 -0.078230411633667785 0.020798665967291637</location>
-				</Marker>
-				<Marker name="right_hand_pinky1">
-					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
-					<socket_parent_frame>/bodyset/hand_r</socket_parent_frame>
-					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>-0.020947841242740208 -0.080816807647172223 0.02009068890490659</location>
+					<location>-0.013148 -0.231687 0.034842699999999997</location>
 					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
 					<fixed>false</fixed>
 				</Marker>
-				<Marker name="left_hand_pinky1">
+				<Marker name="scap_r">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/scapula</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>-0.048296806380724047 0.00058478011503215526 0.016293961273650241</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>false</fixed>
+				</Marker>
+				<Marker name="elb_r">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/ulna</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>-0.04683649094170135 -0.0033621910177436647 0.0021122729073772078</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>false</fixed>
+				</Marker>
+				<Marker name="clav_sc_r">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/clavicle</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>0.012700708755032285 0.0011924177459715945 0.0043233436347429937</location>
+				</Marker>
+				<Marker name="clav_ac_r">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/clavicle</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>-0.012241338637511576 0.032555205498193844 0.11080017568913539</location>
+				</Marker>
+				<Marker name="clav_sc_l">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/clavicle_left</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>0.0028213666090464926 0 0</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>false</fixed>
+				</Marker>
+				<Marker name="clav_ac_l">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/clavicle_left</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>-0.019036000000000001 0.033381443265034207 -0.10884524623306709</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>false</fixed>
+				</Marker>
+				<Marker name="scap_l">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/scapula_left</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>-0.046928676767217167 0.0029637457359500416 -0.015071126968694963</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>false</fixed>
+				</Marker>
+				<Marker name="epic_lat_l">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/humerus_left</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>-0.0015865899999999999 -0.284165 -0.0261137</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>false</fixed>
+				</Marker>
+				<Marker name="epic_m_l">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/humerus_left</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>-0.0044826099999999997 -0.27917900000000001 0.053106199999999999</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>false</fixed>
+				</Marker>
+				<Marker name="elb_l">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/ulna_left</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>-0.040690244278318438 -0.0031595734384595236 -0.0014252957003298907</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>false</fixed>
+				</Marker>
+				<Marker name="styl_r_l">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/radius_left</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>0.040534841112156432 -0.230296 -0.038230861702488642</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>false</fixed>
+				</Marker>
+				<Marker name="styl_u_l">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/ulna_left</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>-0.013847999999999999 -0.24168700000000001 -0.050842699999999998</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>false</fixed>
+				</Marker>
+				<Marker name="head_f">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/head</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>0.093350877007810376 0.59222090582837028 -0.0012376550016374162</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>false</fixed>
+				</Marker>
+				<Marker name="head_l">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/head</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>0.046059292587423799 0.56816411752565477 -0.072583906224999925</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>false</fixed>
+				</Marker>
+				<Marker name="head_r">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/head</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>0.040265995436355444 0.55558514187901975 0.064414004785886131</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>false</fixed>
+				</Marker>
+				<Marker name="p2_l">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
 					<socket_parent_frame>/bodyset/hand_left</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>-0.0044886780366873011 -0.075314188199544482 0.033690437091279418</location>
+					<location>-0.0080123004474463022 -0.087469471141365662 -0.018845304214973616</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>false</fixed>
 				</Marker>
-				<Marker name="left_hand_index1">
+				<Marker name="p5_l">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
 					<socket_parent_frame>/bodyset/hand_left</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>-0.0048671706071526464 -0.082357617802402944 -0.017812796987411787</location>
+					<location>-2.6997509295231482e-05 -0.079150097846738612 0.033902543229181355</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>false</fixed>
 				</Marker>
-				<Marker name="virtual_marker_0">
+				<Marker name="hand_l">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/hand_left</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>-0.012271149997727425 -0.055563152194480041 0.0062434302955987403</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>true</fixed>
+				</Marker>
+				<Marker name="p5_r">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/hand_r</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>-0.022725627120905912 -0.078018069209916344 0.0012409624978490684</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>false</fixed>
+				</Marker>
+				<Marker name="hand_r">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/hand_r</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>-0.001225463668086805 -0.045873861377332563 0.022056469071730873</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>false</fixed>
+				</Marker>
+				<Marker name="p2_r">
+					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
+					<socket_parent_frame>/bodyset/hand_r</socket_parent_frame>
+					<!--The fixed location of the station expressed in its parent frame.-->
+					<location>0.023049009517630281 -0.08400808630275447 0.013927130624949883</location>
+					<!--Flag (true or false) specifying whether the marker is fixed in its parent frame during the marker placement step of scaling.  If false, the marker is free to move within its parent Frame to match its experimental counterpart.-->
+					<fixed>false</fixed>
+				</Marker>
+				<Marker name="ribs_r">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
 					<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>0.029336079435767912 -0.045608676437501286 0.044879590371333107</location>
+					<location>0.097676087091023905 -0.24684453363867995 0.083588769736518367</location>
 				</Marker>
-				<Marker name="virtual_marker_1">
+				<Marker name="ribs_l">
 					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
 					<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
 					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>0.040118277123193311 -0.066928766200343576 -0.056958288704517093</location>
-				</Marker>
-				<Marker name="virtual_marker_2">
-					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
-					<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>0.058543756457304696 -0.11409325549623868 0.03949061775641699</location>
-				</Marker>
-				<Marker name="virtual_marker_3">
-					<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame to which this station is fixed.).-->
-					<socket_parent_frame>/bodyset/thorax</socket_parent_frame>
-					<!--The fixed location of the station expressed in its parent frame.-->
-					<location>0.064261017681648006 -0.13570578014914156 -0.062429692603504394</location>
+					<location>0.09170634611352739 -0.24684500000000001 -0.088970935350296293</location>
 				</Marker>
 			</objects>
-			<groups />
 		</MarkerSet>
 	</Model>
 </OpenSimDocument>

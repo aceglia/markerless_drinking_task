@@ -1,27 +1,28 @@
-thorax:
-- - thx_r
-  - thx_l
-  - thx_d
-- - ster
-  - xiph
-  - c7
-  - t10
-  - ribs_r
-  - ribs_l
-  - clav_sc_r
-  - clav_sc_l
-arm_r:
-- - hum_a_r
-  - hum_p_r
-  - hum_d_r
-- - epic_m_r
-  - epic_l_r
-arm_l:
-- - hum_a_l
-  - hum_p_l
-  - hum_d_l
-- - epic_m_l
-  - epic_l_l
+clusters:
+  thorax:
+  - - thx_r
+    - thx_l
+    - thx_d
+  - - ster
+    - xiph
+    - c7
+    - t10
+    - ribs_r
+    - ribs_l
+    - clav_sc_r
+    - clav_sc_l
+  arm_r:
+  - - hum_a_r
+    - hum_p_r
+    - hum_d_r
+  - - epic_m_r
+    - epic_lat_r
+  arm_l:
+  - - hum_a_l
+    - hum_p_l
+    - hum_d_l
+  - - epic_m_l
+    - epic_lat_l
 options:
   replace_existing: false
   lowpass_filter: true

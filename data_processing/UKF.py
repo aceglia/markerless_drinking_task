@@ -7,7 +7,6 @@ from filterpy.kalman import UnscentedKalmanFilter as UKF
 from filterpy.kalman import MerweScaledSigmaPoints
 from .io_utils import write_mot_file
 
-# import biorbd
 from enum import IntEnum
 
 
