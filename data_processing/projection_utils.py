@@ -65,6 +65,50 @@ def pc_from_rgbd(depth, color, camera_config):
     o3d_pcd = o3d.geometry.PointCloud.create_from_rgbd_image(rgbd_image, intrincics)
     return o3d_pcd
 
+def pc_from_depth(depth, camera_config):
+    intrinsic = o3d.camera.PinholeCameraIntrinsic(
+        camera_config.depth.width,
+        camera_config.depth.height,
+        camera_config.depth.fx,
+        camera_config.depth.fy,
+        camera_config.depth.ppx,
+        camera_config.depth.ppy,
+    )
+    depth_o3d = o3d.geometry.Image(depth)
+    pcd = o3d.geometry.PointCloud.create_from_depth_image(
+        depth_o3d,
+        intrinsic,
+        depth_scale=camera_config.depth.scale,
+        stride=1,
+    )
+    pcd.paint_uniform_color([0.5, 0.5, 0.5])
+    return pcd
+
+
+def transform_spheres(spheres, T):
+    if not isinstance(spheres, list):
+        spheres = [spheres]
+    new_spheres = []
+    for sphere in spheres:
+        center = sphere.get_center()
+        center_trans = (
+            T @ np.append(center, 1.0)
+        )[:3]
+        sphere_new = o3d.geometry.TriangleMesh.create_sphere(
+            radius=0.010
+        )
+        sphere_new.translate(center_trans)
+        sphere_new.paint_uniform_color([1, 0, 0])
+        new_spheres.append(sphere_new)
+    return new_spheres
+
+
+def get_pc(depth, camera_config, color=None):
+    if color is not None:
+        return pc_from_rgbd(depth, color, camera_config)
+    else:
+        return pc_from_depth(depth, camera_config)
+
 
 def get_mid_point(should_pos, distance_factor=0.8, weight=[1, 1]):
     pose_tmp = np.array(should_pos)
@@ -87,11 +131,11 @@ def get_vec_from_should(should_pos):
     return unit_vector
 
 
-def perform_icp(ref_pc, target_pc, spheres, threshold=0.1, initial_guess=np.eye(4), show=False):
-    ref_pc = ref_pc.voxel_down_sample(0.01)
-    target_pc = target_pc.voxel_down_sample(0.01)
-    ref_pc.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamHybrid(radius=0.08, max_nn=30))
-    target_pc.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamHybrid(radius=0.08, max_nn=30))
+def perform_icp(ref_pc, target_pc, threshold=0.015, initial_guess=np.eye(4), show=False):
+    ref_pc = ref_pc.voxel_down_sample(0.005)
+    target_pc = target_pc.voxel_down_sample(0.005)
+    ref_pc.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamHybrid(radius=0.03, max_nn=30))
+    target_pc.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamHybrid(radius=0.03, max_nn=30))
     ref_pc.orient_normals_towards_camera_location([0, 0, 0])
     target_pc.orient_normals_towards_camera_location([0, 0, 0])
 
@@ -103,16 +147,6 @@ def perform_icp(ref_pc, target_pc, spheres, threshold=0.1, initial_guess=np.eye(
         initial_guess,
         o3d.pipelines.registration.TransformationEstimationPointToPlane(loss),
     )
-
-    new_spheres = []
-    if not isinstance(spheres, list):
-        spheres = [spheres]
-    for sphere in spheres:
-        new_sphere = o3d.geometry.TriangleMesh.create_sphere(radius=0.010)
-        center_trans = (reg_p2p.transformation @ np.append(sphere.get_center(), 1.0))[:3]
-        new_sphere.translate(center_trans)
-        new_sphere.paint_uniform_color([1, 0, 0])
-        new_spheres.append(new_sphere)
     if show:
         o3d_pcd_result = o3d.geometry.PointCloud(ref_pc)
         o3d_pcd_result.transform(reg_p2p.transformation)
@@ -123,9 +157,6 @@ def perform_icp(ref_pc, target_pc, spheres, threshold=0.1, initial_guess=np.eye(
                 o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.1, origin=[0, 0, 0]),
                 target_pc,
                 o3d_pcd_result,
-                *new_spheres,
             ]
         )
-    if len(new_spheres) == 1:
-        new_spheres = new_spheres[0]
-    return new_spheres, reg_p2p.transformation
+    return reg_p2p.transformation

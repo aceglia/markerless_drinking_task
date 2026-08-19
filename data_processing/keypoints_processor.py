@@ -14,7 +14,7 @@ try:
     from ultralytics import YOLO
 except ImportError:
     pass
-from .projection_utils import perform_icp, pc_from_rgbd
+from .projection_utils import get_pc, perform_icp, transform_spheres
 from .io_utils import write_trc, return_unique_keypoints
 from .trajectory_utils import remove_outliers, clean_trajectory, filter_points_3d
 
@@ -93,9 +93,11 @@ class Keypoints3DProcessor:
         cup_points_mat = np.empty((self.keypoints.shape[0], 3))
         count = 0
         thorax_spheres = self.thorax_spheres
+        color_img = None
+        T_ref_current = np.eye(4)
         for points, img, color in zip(self.keypoints, self.depth_img_path, self.color_img_path):
             depth_img = cv2.imread(img, cv2.IMREAD_ANYDEPTH)
-            if track_thorax or track_cup:
+            if track_cup:
                 color_img = cv2.imread(color)
                 # cup_bboxes = self._detect_cup(color_img)
                 # if len(cup_bboxes) > 0:
@@ -116,20 +118,21 @@ class Keypoints3DProcessor:
             if track_thorax:
                 # pc_thorax = crop_pc(pc_tmp, self.thorax_crops, self.thorax_limit_depth, self.camera)
                 # pc_thorax = get_reduced_pc(depth_img, color_img, self.thorax_crops, self.thorax_limit_depth, self.camera)
-                pc_from_rgb = pc_from_rgbd(depth_img, color_img, self.camera)
+                pc_from_rgb = get_pc(depth_img, self.camera, color_img)
                 pc_thorax = pc_from_rgb.crop(self.thorax_bbox)
 
                 if pc_thorax.is_empty():
                     raise ValueError("Thorax point cloud is empty. Check the thorax crops and limit depth.")
                 if count > 0:
-                    thorax_spheres, thorax_transformation = perform_icp(
+                    T_increment = perform_icp(
                         pc_thorax_prev,
                         pc_thorax,
-                        thorax_spheres,
                         threshold=0.01,
                         initial_guess=np.eye(4),
                         show=False,
                     )
+                    T_ref_current = T_increment @ T_ref_current
+                    thorax_spheres = transform_spheres(self.thorax_spheres, T_ref_current)
                 pc_thorax_prev = o3d.geometry.PointCloud(pc_thorax)
             if track_cup and self.cup_crops is not None:
                 raise NotImplementedError("Cup tracking is not implemented yet")
