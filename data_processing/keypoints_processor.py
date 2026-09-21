@@ -27,6 +27,7 @@ class Keypoints3DProcessor:
         self.cup_crops = None
         self.side = None
         self.tmp_3d_keypoints = None
+        self.shoulder_weight = {"left": [0.5, 1], "right": [1, 1.5]}
 
     def _get_yolo_model(self):
         if self._yolo_model is None:
@@ -49,7 +50,21 @@ class Keypoints3DProcessor:
         self.keypoints_names = self.wholebody.minimal_set
         self._init_img()
         self._check_side()
+        self._compute_ratio()
         self._prepare_thorax_icp(show_pc=show_pc)
+
+    def _compute_ratio(self):
+        left_arm = self.keypoints[0][
+            [self.wholebody.get_index("left_shoulder"), self.wholebody.get_index("left_elbow"), 
+             ], :
+        ]     
+        right_arm = self.keypoints[0][
+            [self.wholebody.get_index("right_shoulder"), self.wholebody.get_index("right_elbow"), 
+             ], :
+        ]
+        len_left_arm = np.linalg.norm(left_arm[1] - left_arm[0])
+        len_right_arm = np.linalg.norm(right_arm[1] - right_arm[0])
+        self.shoulder_weight = {"left": [float(len_left_arm / len_right_arm), 1], "right": [1, float(len_right_arm / len_left_arm)]}
     
     def _check_side(self):
         keypoints_3d = self._get_3d_keypoints(self.keypoints[0], self.init_depth, idx=0, neighbourhood=15)
@@ -125,7 +140,7 @@ class Keypoints3DProcessor:
                         pc_thorax,
                         threshold=0.01,
                         initial_guess=np.eye(4),
-                        show=False,
+                        show=show,
                     )
                     T_ref_current = T_increment @ T_ref_current
                     thorax_spheres = transform_spheres(self.thorax_spheres, T_ref_current)
@@ -152,8 +167,9 @@ class Keypoints3DProcessor:
         self.keypoints_names = self.wholebody.minimal_set + [f"virtual_marker_{i}" for i in range(4)]
         return key_points_mat, cup_points_mat
 
-    def _prepare_thorax_icp(self, show_pc=False):
-        pc = get_pc(self.init_depth, self.camera, self.init_color)
+    def _prepare_thorax_icp(self, shoulder_weight=None, show_pc=False):
+        shoulder_weight = shoulder_weight if shoulder_weight is not None else self.shoulder_weight[self.side]
+        pc = pc_from_rgbd(self.init_depth, self.init_color, self.camera)
         points_3d = self.camera.get_markers_pos_3d(self.keypoints[0], self.init_depth, in_pixel=False, neighbourhood=5, depth_in_meter=True)
         points_vert = self.camera.align_with_z(points_3d.T)
         pc_copy = o3d.geometry.PointCloud(pc)
@@ -164,27 +180,14 @@ class Keypoints3DProcessor:
         co_rotate = co_rotate.rotate(self.camera.accel_rotation, center=(0, 0, 0))
         shoulder_pos = points_vert[
             [self.wholebody.get_index("right_shoulder"), self.wholebody.get_index("left_shoulder"), 
-             self.wholebody.get_index("right_elbow"), self.wholebody.get_index("left_elbow")], :
-        ]
-
-        midpoint = np.mean(shoulder_pos, axis=0)
-        left_arm = self.keypoints[0][[self.wholebody.get_index("left_shoulder"), self.wholebody.get_index("left_elbow")], :]
-        right_arm = self.keypoints[0][[self.wholebody.get_index("right_shoulder"), self.wholebody.get_index("right_elbow")], :]
-        dist_left = np.linalg.norm(left_arm[1] - left_arm[0])
-        dist_right = np.linalg.norm(right_arm[1] - right_arm[0])
-        ratio = dist_left / dist_right if self.side == "left" else dist_right / dist_left
-        if self.side == "left":
-            weight = [ratio, 1]
-        else:
-            weight = [1, ratio]
-
-        shoulder_pos = points_vert[
-            [self.wholebody.get_index("right_shoulder"), self.wholebody.get_index("left_shoulder"), 
              ], :
-        ]        
-        midpoint = np.einsum('i,ij->j', weight, shoulder_pos) / np.sum(weight)
+        ]     
+
+        shoulder_pos[0, :] = shoulder_pos[ 0, :] * shoulder_weight[0]
+        shoulder_pos[1, :] = shoulder_pos[1, :] * shoulder_weight[1]
+        midpoint = np.sum(shoulder_pos, axis=0) / np.sum(shoulder_weight)
         dist_should = np.linalg.norm(shoulder_pos[1] - shoulder_pos[0])
-        mid_proj = midpoint + np.array([0, 0, 0.1])
+        mid_proj = midpoint + np.array([0, 0, 0.10])
         dist2 = np.sum((np.array(pc_rot.points) - mid_proj)**2, axis=1)
         idx = np.argmin(dist2)
         
@@ -234,15 +237,22 @@ class Keypoints3DProcessor:
 
         coordinate_frame = np.stack([first_axis, y, normal], axis=1)
         self.thorax_bbox = o3d.geometry.OrientedBoundingBox(
-            center=closest_point + [0, 0.05, 0.02],
+            center=closest_point + [0, -0.06, 0.2],
             R=coordinate_frame,
-            extent=np.array([dist_should * 0.8, dist_should, 0.16])  # x, y, z lengths
+            extent=np.array([dist_should * 0.5, dist_should, 0.3])  # x, y, z lengths
         )        
         self.thorax_bbox.rotate(self.camera.accel_rotation.T, center=(0, 0, 0))
         if show_pc:
+            mid_sphere = o3d.geometry.TriangleMesh.create_sphere(radius=0.010)
+            mid_sphere.paint_uniform_color([0, 1, 0])
+            mid_sphere.translate(midpoint)
+            mid_sphere.rotate(self.camera.accel_rotation.T, center=(0, 0, 0))
             axes = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.1, origin=closest_point)
             axes.rotate(coordinate_frame, center=closest_point)
-            o3d.visualization.draw_geometries([pc] + self.thorax_spheres + [self.thorax_bbox] + sphere_tmp)
+            o3d.visualization.draw_geometries([pc] + self.thorax_spheres + [self.thorax_bbox, mid_sphere])
+
+    def _compute_thorax_sphere(self):
+        
 
     def _prepare_cup_icp(self):
         detect_cup_boxes = self._detect_cup(self.init_color)
@@ -299,9 +309,10 @@ class Keypoints3DProcessor:
         cluster_eps_list=[0.1, 0.08, 0.06, 0.04, 0.02, 0.01],
         idxs_for_clustering=None,
         align_with_z=True,
-        save_plot=False,
+        plot=False,
+        shoulder_weight=None
     ):
-        base_dir = os.path.dirname(self.data_path)
+        shoulder_weight = shoulder_weight if shoulder_weight is not None else self.shoulder_weight[self.side]
         post_process_3d = self.keypoints_3d.copy()
         side = "right" if self.side == "left" else "left"
         side = self.side
@@ -365,6 +376,16 @@ class Keypoints3DProcessor:
                     plt.savefig(os.path.join(base_dir, f"After low-pass filtering_{side}.png"))
         if align_with_z:
             post_process_3d = self.camera.align_with_z(post_process_3d)
+            shoulder_pos = post_process_3d[:, 
+                    [self.wholebody.get_index("right_shoulder"), self.wholebody.get_index("left_shoulder"), 
+                    ], :
+                ]        
+            shoulder_pos[:, 0, :] = shoulder_pos[:, 0, :] * shoulder_weight[0]
+            shoulder_pos[:, 1, :] = shoulder_pos[:, 1, :] * shoulder_weight[1]
+            midpoint = np.sum(shoulder_pos, axis=1) / np.sum(shoulder_weight)
+            # midpoint = np.einsum('i,ij->j', shoulder_weight, shoulder_pos[0]) / np.sum(shoulder_weight)
+            post_process_3d = np.concatenate([post_process_3d, midpoint[:, np.newaxis, :]], axis=1)
+            self.keypoints_names += ["ster"]
         self.post_process_3d = post_process_3d
         return post_process_3d
 
@@ -391,7 +412,7 @@ class Keypoints3DProcessor:
         if export_trc:
             write_trc(
                 self.post_process_3d.T,
-                self.wholebody.minimal_set + [f"virtual_marker_{i}" for i in range(4)],
+                self.keypoints_names,
                 self.data_path.replace("keypoints.npy", "keypoints_3d.trc"),
                 self.camera.color.fps,
             )
