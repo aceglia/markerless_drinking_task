@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import (
     QGridLayout,
     QCheckBox,
 )
-from .process_utils import ViconProcessor
+from .vicon_processor import ViconProcessor
 from .popup_utils import ScalingDialog
 
 

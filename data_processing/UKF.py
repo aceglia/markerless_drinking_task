@@ -43,7 +43,7 @@ class JointMarkerUKF:
     ):
         self.model = model if isinstance(model, osim.Model) else osim.Model(model)
         self.state = self.model.initSystem()
-
+        self.fps = data_rate
         self.dt = 1.0 / data_rate
         if type == "constant_velocity":
             self.n_diff = 1
@@ -603,5 +603,22 @@ class JointMarkerUKF:
             dic_to_save.update(initial_dir)
         with open(filename, 'wb') as f:
             pickle.dump(dic_to_save, f, protocol=pickle.HIGHEST_PROTOCOL)
+        import pandas as pd
+        dof_names = self.dof_names
+        joint_angles = self.states[:self.N_JOINTS]
+        joint_velocities = self.states[self.N_JOINTS :]
+        df = pd.DataFrame()
+        for i, dof_name in enumerate(dof_names):
+            df[f"{dof_name}_angle"] = joint_angles[i]
+            df[f"{dof_name}_velocity"] = joint_velocities[i]
+        df.to_csv(filename.replace(".pkl", '.csv'), index=False)
+        markers_names = self.model_marker_names
+        markers_positions = self.model_markers
+        df_markers = pd.DataFrame()
+        for i, marker_name in enumerate(markers_names):
+            df_markers[f"{marker_name}_x"] = markers_positions[0, i]
+            df_markers[f"{marker_name}_y"] = markers_positions[1, i]
+            df_markers[f"{marker_name}_z"] = markers_positions[2, i]
+        df_markers.to_csv(filename.replace(".pkl", '_markers.csv'), index=False)
         if mot_file:
             write_mot_file(filename.replace(".pkl", '.mot'), self.dt, self.dof_names, self.states[:self.N_JOINTS])       

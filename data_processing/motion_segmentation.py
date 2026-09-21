@@ -3,9 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 import re
-from scipy.signal import find_peaks
 
-from camera_converter import CameraConverter
+from .camera_converter import CameraConverter
 
 try:
     from ultralytics import YOLO
@@ -215,24 +214,38 @@ class MotionSegmentation:
             img_paths = self._reorder_paths(img_paths)
             self.get_cup_centers(img_paths, camera, cup_offset=0.05)
             self.get_transporting_event(threshold=threshold_transporting)
+        reaching_time = self._get_phase_time(self.onset_idx, self.transport_start_idx)
+        transporting_one = self._get_phase_time(self.transport_start_idx, self.drinking_start_idx)
+        drinking_time = self._get_phase_time(self.drinking_start_idx, self.drinking_end_idx)
+        transport_time = self._get_phase_time(self.drinking_end_idx, self.transport_end_idx)
+        motion_end = self._get_phase_time(self.transport_end_idx, self.offset_idx)
         self.segmentation_results = {
             "onset_idx": self.onset_idx,
             "offset_idx": self.offset_idx,
             "drinking_start_idx": self.drinking_start_idx,
             "drinking_end_idx": self.drinking_end_idx,
-            "cup_centers": self.cup_centers if use_cup_tracking else None,
+            # "cup_centers": self.cup_centers if use_cup_tracking else None,
             "transport_start_idx": self.transport_start_idx,
             "transport_end_idx": self.transport_end_idx,
-            "distance_cup": self.cup_center_start_to_end
+            "distance_cup": self.cup_center_start_to_end, 
+            "reaching_time": reaching_time,
+            "transporting_up_time": transporting_one,
+            "drinking_time": drinking_time,
+            "transporting_down_time": transport_time,
+            "motion_end": motion_end,
+            "total_time": self._get_phase_time(self.onset_idx, self.offset_idx),
         }
         return self.segmentation_results
     
     def save(self, filename):
         with open(filename, "wb") as f:
             pickle.dump(self.segmentation_results, f, protocol=pickle.HIGHEST_PROTOCOL)
+        import pandas as pd
+        df = pd.DataFrame.from_dict(self.segmentation_results, orient='index', columns=['value'])
+        df.to_csv(filename.replace('.pkl', '.csv'))
         return True
 
-    def plot(self):
+    def plot(self, save_path=None):
         fps = self.fps
         plt.rcParams['svg.fonttype'] = 'none'
         fig, axs = plt.subplots(4, 1, figsize=(10, 10), sharex=True)
@@ -285,7 +298,11 @@ class MotionSegmentation:
         [ax.text(time[self.transport_start_idx], ax.get_ylim()[1], f"Trans.: \n{transporting_one:.2f}s", color="blue", verticalalignment="top") for ax in axs]
         [ax.text(time[self.transport_end_idx], ax.get_ylim()[1], f"Return: \n{motion_end:.2f}s", color="blue", verticalalignment="top") for ax in axs]
 
-        plt.show(block=True)
+        if save_path is not None:
+            plt.savefig(save_path, bbox_inches='tight', dpi=300)
+        else:
+            plt.show(block=True)
+        plt.close(fig)
 
 
 if __name__ == "__main__":

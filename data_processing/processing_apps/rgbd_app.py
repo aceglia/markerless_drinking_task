@@ -4,11 +4,12 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QLabel,
     QLineEdit,
+    QTextEdit,
     QFileDialog,
     QGridLayout,
-    QCheckBox,
 )
 
+from .rgbd_processor import RGBDProcessor
 
 class RGBDProcessingApp(QMainWindow):
     def __init__(self):
@@ -18,14 +19,15 @@ class RGBDProcessingApp(QMainWindow):
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
         self._init_layout()
-        self.processor = None
+        self.processor = RGBDProcessor(bag_file_path=None)
 
     def _init_layout(self):
-        # Create file selection layout
         file_selection_layout = QGridLayout()
 
         self.trials_file_label = QLabel("Trials File:")
-        self.trials_file_input = QLineEdit()
+        self.trials_file_input = QTextEdit()
+        self.trials_file_input.setReadOnly(True)
+        self.trials_file_input.setMaximumHeight(100)
         self.trials_file_browse_button = QPushButton("Browse")
         self.trials_file_browse_button.clicked.connect(self.browse_trials_file)
 
@@ -37,55 +39,53 @@ class RGBDProcessingApp(QMainWindow):
         self.process_button.clicked.connect(self.process_data)
         self.process_button.setEnabled(False)
 
-        self.option_files_label = QLabel("Options File:")
-        self.options_files = QLineEdit()
-        self.options_files_browse_button = QPushButton("Browse")
-        self.options_files_browse_button.clicked.connect(self.browse_options_file)
+        self.option_files_label = QLabel("Options File (optional):")
+        self.options_file = QLineEdit()
+        self.options_file_browse_button = QPushButton("Browse")
+        self.options_file_browse_button.clicked.connect(self.browse_options_file)
         file_selection_layout.addWidget(self.process_button, 3, 0, 1, 4)
         file_selection_layout.addWidget(self.option_files_label, 4, 0)
-        file_selection_layout.addWidget(self.options_files, 4, 1)
-        file_selection_layout.addWidget(self.options_files_browse_button, 4, 2)
+        file_selection_layout.addWidget(self.options_file, 4, 1)
+        file_selection_layout.addWidget(self.options_file_browse_button, 4, 2)
 
         self.central_widget.setLayout(file_selection_layout)
 
     def browse_trials_file(self):
-        file_path, _ = QFileDialog.getOpenFileName(self, "Select Trials File", "", "RealSense Files (*.db3);RealSense Files (*.bag);;All Files (*)")
+        file_path, _ = QFileDialog.getOpenFileNames(self, "Select Trials File", "", "RealSense Files (*.db3);;RealSense Files (*.bag);;All Files (*)")
         if file_path:
-            self.trials_file_input.setText(file_path)
+            self.trials_file_input.clear()
+            self.trials_file_input.setText("\n".join(file_path))
             self.check_files_selected()
 
     def browse_options_file(self):
         file_path, _ = QFileDialog.getOpenFileName(self, "Select Options File", "", "YAML Files (*.yaml);;All Files (*)")
         if file_path:
-            self.options_files.setText(file_path)
+            self.options_file.setText(file_path)
+            self.processor.options.from_file(file_path)
             self.check_files_selected()
 
     def check_files_selected(self):
         if (
-            self.trials_file_input.text()
-            and self.opensim_file_input.text()
+            self.trials_file_input.toPlainText() != ""
         ):
             self.process_button.setEnabled(True)
         else:
             self.process_button.setEnabled(False)
         
     def process_data(self):
-        if self.processor is None:
-            self.processor = ViconProcessor()
-        self.processor.initialize(calibration_files=[self.thorax_calibration_file, self.anato_calibration_file], options_file=self.options_files.text())
-        self.processor.batch_process_trials(self.trials_file_input.text(), opensim_model=self.opensim_file_input.text(), scale=self.opensim_scale.isChecked())
+        try:
+            self.processor.process_trials(
+                    path_list=self.trial_files,
+                    options_file_path=self.options_file.text(),
+                )
+        except Exception as e:
+            print(f"Error occurred while processing data: {e}")
 
     def closeEvent(self, event):
         event.accept()
 
     @property
-    def calibration_files(self):
-        if self.calibration_files_input.text() == "":
-            return []
-        return self.calibration_files_input.text().split(";")
-
-    @property
     def trial_files(self):
-        if self.trials_file_input.text() == "":
+        if self.trials_file_input.toPlainText() == "":
             return []
-        return self.trials_file_input.text().split(";")
+        return self.trials_file_input.toPlainText().split("\n")

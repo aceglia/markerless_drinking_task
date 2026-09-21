@@ -74,11 +74,11 @@ def pc_from_depth(depth, camera_config):
         camera_config.depth.ppx,
         camera_config.depth.ppy,
     )
-    depth_o3d = o3d.geometry.Image(depth)
+    depth_o3d = o3d.geometry.Image(np.squeeze(depth))
     pcd = o3d.geometry.PointCloud.create_from_depth_image(
         depth_o3d,
         intrinsic,
-        depth_scale=camera_config.depth.scale,
+        depth_scale=1/camera_config.depth_scale,
         stride=1,
     )
     pcd.paint_uniform_color([0.5, 0.5, 0.5])
@@ -138,7 +138,6 @@ def perform_icp(ref_pc, target_pc, threshold=0.015, initial_guess=np.eye(4), sho
     target_pc.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamHybrid(radius=0.03, max_nn=30))
     ref_pc.orient_normals_towards_camera_location([0, 0, 0])
     target_pc.orient_normals_towards_camera_location([0, 0, 0])
-
     loss = o3d.pipelines.registration.TukeyLoss(k=0.02)
     reg_p2p = o3d.pipelines.registration.registration_icp(
         ref_pc,
