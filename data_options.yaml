@@ -6,13 +6,22 @@ data_processing:
     order: 4
   jump_filtering:
     enable: true
-    remove_outliers_on_diff: 0.1
-    remove_outliers_on_sd: 0.1
-    cluster_base_filter: true
+    smooth_process_noise:
+      opposite_arm: 1
+      motion_arm: 10
+      center: 10
+    smooth_measurement_noise:
+      opposite_arm: 0.0001
+      motion_arm: 1.0e-05
+      center: 0.01
+    smooth_nis_threshold:
+      opposite_arm: 10
+      motion_arm: 40
+      center: 5
     save_plot: true
 motion_segmentation:
   threshold_onset: 0.1
-  threshold_drinking: 0.1
+  threshold_drinking: 0.15
   threshold_transporting: 0.1
 CNN_model:
   mode: balanced

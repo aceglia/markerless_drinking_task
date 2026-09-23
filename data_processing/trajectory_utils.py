@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn.cluster import DBSCAN
 from scipy import signal
+from .data_smoother import smooth_marker
 
 def filter_points_3d(data, cutoff=10, fs=30, order=2):
     b, a = signal.butter(order, cutoff, "low", fs=fs)
@@ -18,8 +19,22 @@ def filter_points_3d(data, cutoff=10, fs=30, order=2):
         filtered_mat[:, i, :] = filtered_sig.T
     return filtered_mat
 
+def smooth_trajectory(data, dt=1/30, process_noise=1.0, measurement_noise=1e-4, nis_threshold=None, markers_name=None):
+    smoothed_traj = np.zeros_like(data)
+    for mar, name in enumerate(markers_name):
+        side = "left" if "left" in name.lower() else "right" if "right" in name.lower() else "center"
+        smoothed, velocity, nis, accepted = smooth_marker(
+            data[:, mar, :],
+            dt=dt,
+            process_noise=process_noise[side],
+            measurement_noise=measurement_noise[side],
+            nis_threshold=nis_threshold[side],
+        )
+        smoothed_traj[:, mar, :] = smoothed
+    return smoothed_traj
 
-def remove_outliers(keypoints, on_diff=False):
+
+def remove_outliers(keypoints, on_diff=False, threshold=3):
     filtered = np.zeros_like(keypoints) * np.nan
     if on_diff:
         filtered[-1] = keypoints[-1]
@@ -31,8 +46,8 @@ def remove_outliers(keypoints, on_diff=False):
         mean = np.nanmean(ch_data[ch_data[:, 2].nonzero()[0], :], axis=0)
         std = np.nanstd(ch_data[ch_data[:, 2].nonzero()[0], :], axis=0)
 
-        lower = mean - 3 * std
-        upper = mean + 3 * std
+        lower = mean - threshold * std
+        upper = mean + threshold * std
         valid_mask = np.all((ch_data >= lower) & (ch_data <= upper), axis=1)
         if on_diff:
             filtered[:-1, ch, :][valid_mask] = keypoints[:-1, ch, :][valid_mask]

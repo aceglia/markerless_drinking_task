@@ -7,9 +7,9 @@ class ProcessingOptions:
     def __init__(self):
         self.paired_event_idx = None
         self.set_defaults()
-        if os.path.exists("data_options.yaml"):
-            self.from_file("data_options.yaml")
-        else:
+        if not os.path.exists("data_options.yaml"):
+        #     self.from_file("data_options.yaml")
+        # else:
             self.to_file("data_options.yaml")
 
     def set_defaults(self):
@@ -34,9 +34,9 @@ class ProcessingOptions:
         self.projection = {"clusters": self.clusters, "replace_existing": False}
         self.jump_filtering = {
             "enable": True,
-            "remove_outliers_on_diff": 0.1,
-            "remove_outliers_on_sd": 0.1,
-            "cluster_base_filter": True,
+            "smooth_process_noise": {"opposite_arm": 1, "motion_arm": 10, "center": 10},
+            "smooth_measurement_noise": {"opposite_arm": 1e-4, "motion_arm": 1e-5, "center": 1e-2},
+            "smooth_nis_threshold": {"opposite_arm": 10, "motion_arm": 40, "center": 5},
             "save_plot": True,
         }
         self.export_trc = True

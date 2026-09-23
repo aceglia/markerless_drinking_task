@@ -1,6 +1,8 @@
 import open3d as o3d
 import numpy as np
 import cv2
+from scipy.spatial.transform import Rotation
+
 
 def get_reduced_pc(depth, color, crops_pos, limit_depth, camera_config):
     mask = np.zeros(depth.shape[:2], dtype=np.uint8)
@@ -146,11 +148,19 @@ def perform_icp(ref_pc, target_pc, threshold=0.015, initial_guess=np.eye(4), sho
         initial_guess,
         o3d.pipelines.registration.TransformationEstimationPointToPlane(loss),
     )
+    if np.linalg.norm(reg_p2p.transformation[:3,3])*1000 > 5:
+        print(
+        f"fitness={reg_p2p.fitness:.3f}, "
+        f"rmse={reg_p2p.inlier_rmse*1000:.2f} mm, "
+        f"translation={np.linalg.norm(reg_p2p.transformation[:3,3])*1000:.2f} mm"
+        )
+        angle = Rotation.from_matrix(reg_p2p.transformation[:3, :3]).magnitude()
+
+        print(f"rotation={np.degrees(angle):.3f} deg")
     if show:
         o3d_pcd_result = o3d.geometry.PointCloud(ref_pc)
         o3d_pcd_result.transform(reg_p2p.transformation)
         o3d_pcd_result.paint_uniform_color([1, 0, 0])
-
         o3d.visualization.draw_geometries(
             [
                 o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.1, origin=[0, 0, 0]),

@@ -6,6 +6,7 @@ from .processor import Processor
 
 from ..rtmlib_utils import get_wholebody_model
 from ..options import RGBDProcessingOptions
+from ..data_smoother import smooth_marker
 
 from ..keypoints_processor import Keypoints3DProcessor
 
@@ -42,12 +43,14 @@ class RGBDProcessor(Processor):
         self.keypoints_processor.initialize_data(
             base_dir + "/results/keypoints.npy", image_dir, os.path.join(base_dir, "camera_config.json"), show_pc=False
         )
-        self.keypoints_processor.compute_3d_coordinates(track_thorax=True, track_cup=False)
+        self.keypoints_processor.compute_3d_coordinates(track_thorax=False, track_cup=False)
         self.keypoints_processor.post_process(
-            remove_outliers_on_diff=self.options.jump_filtering['remove_outliers_on_diff'],
+            apply_smoother=self.options.jump_filtering['enable'],
+            smoother_process_noise=self.options.jump_filtering['smooth_process_noise'],
+            smoother_measurement_noise=self.options.jump_filtering['smooth_measurement_noise'],
+            smoother_nis_threshold=self.options.jump_filtering['smooth_nis_threshold'],
             save_plot=self.options.jump_filtering['save_plot'],
-            remove_outliers_on_sd=self.options.jump_filtering['remove_outliers_on_sd'],
-            cluster_base_filter=self.options.jump_filtering['cluster_base_filter'],
+            output_dir = base_dir + "/results"
         )
         self.keypoints_processor.save(export_trc=True)
         keypoints_3d = self.keypoints_processor.post_process_3d

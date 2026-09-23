@@ -161,5 +161,5 @@ class Processor:
             img_paths=img_paths,
             camera=camera,
         )
-        segmentation.plot(save_path=os.path.join(output_dir, "segmentation.png"))
         segmentation.save(os.path.join(output_dir, "segmentation.pkl"))
+        segmentation.plot(save_path=os.path.join(output_dir, "segmentation.png"))

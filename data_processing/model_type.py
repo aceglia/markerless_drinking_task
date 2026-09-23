@@ -28,7 +28,7 @@ class Model:
 
         # Right hand (21 keypoints, MediaPipe-style)
         # "right_hand_wrist",
-        "right_hand_thumb1",
+        # "right_hand_thumb1",
         #   "right_hand_thumb2", "right_hand_thumb3", "right_hand_thumb4",
         "right_hand_index1",
         #   "right_hand_index2", "right_hand_index3", "right_hand_index4",
