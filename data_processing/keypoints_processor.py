@@ -122,12 +122,14 @@ class Keypoints3DProcessor:
 
     def compute_3d_coordinates(self, track_thorax=True, track_cup=False):
         total_frames = self.idxs[-1] - self.idxs[0] + 1
-        key_points_mat = np.full((total_frames, self.keypoints.shape[1] + 4, 3), np.nan)
+        key_points_mat = np.full((total_frames, self.keypoints.shape[1] + len(self.thorax_spheres), 3), np.nan)
         cup_points_mat = np.full((total_frames, 3), np.nan)
         count = 0
         thorax_spheres = self.thorax_spheres
         color_img = None
         T_ref_current = np.eye(4)
+        T_increment = np.eye(4)
+        pc_thorax_keyframe = None
         count = 0
         for i, idx in enumerate(range(self.idxs[0], self.idxs[-1] + 1)):
             if idx not in self.idxs:
@@ -155,24 +157,32 @@ class Keypoints3DProcessor:
                 # cv2.imshow("cup detection", color_img)
                 # cv2.waitKey(0)
             if track_thorax:
-                # pc_thorax = crop_pc(pc_tmp, self.thorax_crops, self.thorax_limit_depth, self.camera)
-                # pc_thorax = get_reduced_pc(depth_img, color_img, self.thorax_crops, self.thorax_limit_depth, self.camera)
                 pc_from_rgb = get_pc(depth_img, self.camera, color_img)
                 pc_thorax = pc_from_rgb.crop(self.thorax_bbox)
 
                 if pc_thorax.is_empty():
                     raise ValueError("Thorax point cloud is empty. Check the thorax crops and limit depth.")
-                if count > 0:
-                    T_increment = perform_icp(
-                        pc_thorax_prev,
-                        pc_thorax,
+                if i > 0:
+                    T_ref_current = perform_icp(
+                        ref_pc=pc_thorax_keyframe,
+                        target_pc=pc_thorax,
                         threshold=0.01,
-                        initial_guess=np.eye(4),
+                        initial_guess=T_ref_current,
                         show=False,
                     )
-                    T_ref_current = T_increment @ T_ref_current
                     thorax_spheres = transform_spheres(self.thorax_spheres, T_ref_current)
-                pc_thorax_prev = o3d.geometry.PointCloud(pc_thorax)
+                    # T_increment = perform_icp(
+                    #     pc_thorax_prev,
+                    #     pc_thorax,
+                    #     threshold=0.01,
+                    #     initial_guess=T_increment,
+                    #     show=False,
+                    # )
+                    # T_ref_current = T_increment @ T_ref_current
+                    # thorax_spheres = transform_spheres(self.thorax_spheres, T_ref_current)
+                    # o3d.visualization.draw_geometries([pc_thorax.rotate(T_ref_current, center=(0, 0, 0)), pc_thorax_prev])
+                else:
+                    pc_thorax_keyframe = o3d.geometry.PointCloud(pc_thorax)
             if track_cup and self.cup_crops is not None:
                 raise NotImplementedError("Cup tracking is not implemented yet")
                 # pc_cup = crop_pc(pc_tmp, self.cup_crops, self.cup_limit_depth, self.camera)
@@ -189,13 +199,13 @@ class Keypoints3DProcessor:
                 points, depth_img, in_pixel=False, neighbourhood=5, depth_in_meter=True
             )
             cup_points_mat[i, :] = np.array([np.nan, np.nan, np.nan])
-            key_points_mat[i, :-4, :] = keypoints_3d.T
-            key_points_mat[i, -4:, :] = np.stack(
+            key_points_mat[i, :-len(self.thorax_spheres), :] = keypoints_3d.T
+            key_points_mat[i, -len(self.thorax_spheres):, :] = np.stack(
                 [thorax_spheres[j].get_center() for j in range(len(thorax_spheres))], axis=0
             )
         self.keypoints_3d = key_points_mat.copy()
         self.cup_points = cup_points_mat.copy()
-        self.keypoints_names = self.wholebody.minimal_set + [f"virtual_marker_{j}" for j in range(4)]
+        self.keypoints_names = self.wholebody.minimal_set + ['ster'] + [f"virtual_marker_{j}" for j in range(4)]
         return key_points_mat, cup_points_mat
 
     def _prepare_thorax_icp(self, shoulder_weight=None, show_pc=False):
@@ -204,13 +214,12 @@ class Keypoints3DProcessor:
         points_3d = self.camera.get_markers_pos_3d(
             self.keypoints[0], self.init_depth, in_pixel=False, neighbourhood=5, depth_in_meter=True
         )
+
+        ###### Work in the coordinate system where z is vertical
         points_vert = self.camera.align_with_z(points_3d.T)
         pc_copy = o3d.geometry.PointCloud(pc)
         pc_rot = pc_copy.rotate(self.camera.accel_rotation, center=(0, 0, 0))
 
-        # coordinate system
-        co_rotate = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.1, origin=[0, 0, 0])
-        co_rotate = co_rotate.rotate(self.camera.accel_rotation, center=(0, 0, 0))
         shoulder_pos = points_vert[
             [
                 self.wholebody.get_index("right_shoulder"),
@@ -218,74 +227,81 @@ class Keypoints3DProcessor:
             ],
             :,
         ]
+        shoulder_pos_w = np.zeros_like(shoulder_pos)
+        shoulder_pos_w[0, :] = shoulder_pos[0, :] * shoulder_weight[0]
+        shoulder_pos_w[1, :] = shoulder_pos[1, :] * shoulder_weight[1]
+        midpoint = np.sum(shoulder_pos_w, axis=0) / np.sum(shoulder_weight)
+        dist2 = np.sum((np.array(pc_rot.points) - midpoint) ** 2, axis=1)
+        idx = np.argmin(dist2)
+        closest_point = np.array(pc_rot.points)[idx]
+        closest_point[2] = closest_point[2] + 0.02
+        close_sphere = o3d.geometry.TriangleMesh.create_sphere(radius=0.010)
+        close_sphere.translate(closest_point)
+        close_sphere.paint_uniform_color([0, 1, 0])
+        self.sternum_sphere = close_sphere
 
-        shoulder_pos[0, :] = shoulder_pos[0, :] * shoulder_weight[0]
-        shoulder_pos[1, :] = shoulder_pos[1, :] * shoulder_weight[1]
-        midpoint = np.sum(shoulder_pos, axis=0) / np.sum(shoulder_weight)
         dist_should = np.linalg.norm(shoulder_pos[1] - shoulder_pos[0])
         mid_proj = midpoint + np.array([0, 0, 0.10])
-        dist2 = np.sum((np.array(pc_rot.points) - mid_proj) ** 2, axis=1)
-        idx = np.argmin(dist2)
+        mid_sphere = o3d.geometry.TriangleMesh.create_sphere(radius=0.010).translate(mid_proj)
+        mid_sphere.paint_uniform_color([1, 0, 0])
 
-        closest_point = np.array(pc_rot.points)[idx]
-        radius = 0.2
-        dist = np.linalg.norm(np.array(pc_rot.points) - closest_point, axis=1)
-        mask = dist <= radius
-        roi = np.array(pc_rot.points)[mask]
+        x = shoulder_pos[1] - shoulder_pos[0]
+        x = x / np.linalg.norm(x)
 
-        pts = roi[::5]
+        z = np.array([0, 0, -1]) 
 
-        centroid = pts.mean(axis=0)
-        pts_centered = pts - centroid
+        # Make X exactly perpendicular to Z
+        x = x - np.dot(x, z) * z
+        x = x / np.linalg.norm(x)
 
-        _, _, Vh = np.linalg.svd(pts_centered, full_matrices=False)
-        first_axis = shoulder_pos[1] - shoulder_pos[0]
-        normal = Vh[-1, :]
-        n = normal / np.linalg.norm(normal)
-        first_axis /= np.linalg.norm(first_axis)
-        first_axis = first_axis - np.dot(first_axis, n) * n
-        first_axis /= np.linalg.norm(first_axis)
+        # Complete right-handed coordinate system
+        y = np.cross(z, x)
+        y = y / np.linalg.norm(y)
 
-        y = np.cross(n, first_axis)
-        y /= np.linalg.norm(y)
+        # Recompute X to guarantee perfect orthogonality
+        x = np.cross(y, z)
+        x = x / np.linalg.norm(x)
 
+        coordinate_frame = np.stack([x, y, z], axis=1)
+        mesh = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.1, origin=closest_point)
+        mesh.rotate(coordinate_frame, center=closest_point)
+        
         square_size = 0.1
-        to_plot = [*shoulder_pos, midpoint]
-        to_plot.append(closest_point)
-        sphere_tmp = []
-        for pt in to_plot:
+        dx = [-square_size / 2, square_size / 2, -square_size / 2, square_size / 2]
+        dz = [0, 0, -square_size, -square_size]
+        self.thorax_spheres = [self.sternum_sphere]
+        for dx_tmp, dz_tmp in zip(dx, dz):
+            point = closest_point + dx_tmp * x + dz_tmp * z
             sphere = o3d.geometry.TriangleMesh.create_sphere(radius=0.010)
-            sphere.translate(pt)
+            sphere.translate(point)
             sphere.paint_uniform_color([0, 1, 0])
-            sphere.rotate(self.camera.accel_rotation.T, center=(0, 0, 0))
-            sphere_tmp.append(sphere)
+            self.thorax_spheres.append(sphere)
 
-        # create four points at the corners of a square centered at closest_point, with normal vector n and first_axis as one of the axes
-        self.thorax_spheres = []
-        for dx in [-square_size / 2, square_size / 2]:
-            for dy in [-square_size / 2, square_size / 2]:
-                point = closest_point + dx * first_axis + dy * y
-                sphere = o3d.geometry.TriangleMesh.create_sphere(radius=0.010)
-                sphere.translate(point)
-                sphere.paint_uniform_color([0, 1, 0])
-                sphere.rotate(self.camera.accel_rotation.T, center=(0, 0, 0))
-                self.thorax_spheres.append(sphere)
+        R = np.column_stack((x, y, z))
+        origin = closest_point
+        sx = dist_should * 0.8
+        sy = 0.2
+        sz = 0.6
 
-        coordinate_frame = np.stack([first_axis, y, normal], axis=1)
-        self.thorax_bbox = o3d.geometry.OrientedBoundingBox(
-            center=closest_point + [0, -0.06, 0.2],
-            R=coordinate_frame,
-            extent=np.array([dist_should * 0.5, dist_should, 0.3]),  # x, y, z lengths
-        )
+        local_corners = np.array([
+            [-sx/2, -sy/2, 0.05],
+            [ sx/2, -sy/2, 0.05],
+            [ sx/2,  sy/2, 0.05],
+            [-sx/2,  sy/2, 0.05],
+            [-sx/2, -sy/2,  -sz/2],
+            [ sx/2, -sy/2,  -sz/2],
+            [ sx/2,  sy/2,  -sz/2],
+            [-sx/2,  sy/2,  -sz/2],
+        ])
+
+        global_corners = origin + local_corners @ R.T
+        self.thorax_bbox = o3d.geometry.OrientedBoundingBox.create_from_points(o3d.utility.Vector3dVector(global_corners))
+
+        ##### Translate everything in the camera coordinate system
         self.thorax_bbox.rotate(self.camera.accel_rotation.T, center=(0, 0, 0))
+        self.thorax_spheres = [sphere.rotate(self.camera.accel_rotation.T, center=(0, 0, 0)) for sphere in self.thorax_spheres]
         if show_pc:
-            mid_sphere = o3d.geometry.TriangleMesh.create_sphere(radius=0.010)
-            mid_sphere.paint_uniform_color([0, 1, 0])
-            mid_sphere.translate(midpoint)
-            mid_sphere.rotate(self.camera.accel_rotation.T, center=(0, 0, 0))
-            axes = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.1, origin=closest_point)
-            axes.rotate(coordinate_frame, center=closest_point)
-            o3d.visualization.draw_geometries([pc] + self.thorax_spheres + [self.thorax_bbox, mid_sphere])
+            o3d.visualization.draw_geometries([pc] + self.thorax_spheres + [self.thorax_bbox])
 
     def _prepare_cup_icp(self):
         detect_cup_boxes = self._detect_cup(self.init_color)
@@ -332,16 +348,19 @@ class Keypoints3DProcessor:
         self.cup_limit_depth /= self.camera.depth_scale
 
     @staticmethod
-    def _plot_curve(title, idx_to_plot, plot_label, colors, data, input, output_dir):
+    def _plot_curve(title, idx_to_plot, plot_label, colors, data, input_data, output_dir):
         for s, side in enumerate(["left", "right"]):
             plt.figure(title + f" {side}")
             for i in range(len(idx_to_plot[s])):
-                plt.plot(data[:, idx_to_plot[s][i], 2], label=plot_label[i], color=colors[i])
-                plt.plot(input[:, idx_to_plot[s][i], 2], alpha=0.5, color=colors[i])
+                plt.plot(data[:, idx_to_plot[s][i], -1], label=plot_label[i], color=colors[i])
+                plt.plot(input_data[:, idx_to_plot[s][i], -1], alpha=0.5, color=colors[i])
             plt.legend()
             plt.savefig(os.path.join(output_dir, f"{'_'.join(title.lower().split(' '))}_{side}.png"))
+            plt.close()
 
-    def _get_smoother_params(self, smoother_process_noise=None, smoother_measurement_noise=None, smoother_nis_threshold=None):
+    def _get_smoother_params(
+        self, smoother_process_noise=None, smoother_measurement_noise=None, smoother_nis_threshold=None
+    ):
         list_side = ["left", "right"]
         if isinstance(smoother_process_noise, dict) and "opposite_arm" in smoother_process_noise:
             smoother_process_noise = {
@@ -369,7 +388,7 @@ class Keypoints3DProcessor:
         )
         measurement_noise = (
             {
-                self.side: 1e-5,
+                self.side: 1e-3,
                 list_side[np.where(np.array(list_side) != self.side)[0][0]]: 1e-4,
                 "center": 1e-2,
             }
@@ -405,6 +424,7 @@ class Keypoints3DProcessor:
         idx_to_plot = []
         for side in ["left", "right"]:
             name_to_plot = [
+                'nose',
                 f"{side}_shoulder",
                 f"{side}_elbow",
                 f"{side}_wrist",
@@ -429,7 +449,7 @@ class Keypoints3DProcessor:
                 smoother_process_noise, smoother_measurement_noise, smoother_nis_threshold
             )
             post_process_3d = smooth_trajectory(
-                post_process_3d,
+                input,
                 dt=1 / self.camera.color.fps,
                 process_noise=process_noise,
                 measurement_noise=measurement_noise,
@@ -441,20 +461,6 @@ class Keypoints3DProcessor:
 
         if align_with_z:
             post_process_3d = self.camera.align_with_z(post_process_3d)
-            shoulder_pos = post_process_3d[
-                :,
-                [
-                    self.wholebody.get_index("right_shoulder"),
-                    self.wholebody.get_index("left_shoulder"),
-                ],
-                :,
-            ]
-            shoulder_pos[:, 0, :] = shoulder_pos[:, 0, :] * shoulder_weight[0]
-            shoulder_pos[:, 1, :] = shoulder_pos[:, 1, :] * shoulder_weight[1]
-            midpoint = np.sum(shoulder_pos, axis=1) / np.sum(shoulder_weight)
-            # midpoint = np.einsum('i,ij->j', shoulder_weight, shoulder_pos[0]) / np.sum(shoulder_weight)
-            post_process_3d = np.concatenate([post_process_3d, midpoint[:, np.newaxis, :]], axis=1)
-            self.keypoints_names += ["ster"]
         self.post_process_3d = post_process_3d
         return post_process_3d
 

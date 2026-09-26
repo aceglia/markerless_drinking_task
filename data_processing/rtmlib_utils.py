@@ -1,22 +1,28 @@
 import os
-os.environ["YOLO_VERBOSE"] = 'False'
+
+os.environ["YOLO_VERBOSE"] = "False"
 import cv2
 from .utils_onnrx import Wholebody
 from .realsense_utils import init_db3, get_aligned_depth, get_frame
 
 import numpy as np
 
-def get_wholebody_model(device='cuda', backend='onnxruntime', mode='balanced', openpose_skeleton=False):
-    wholebody = Wholebody(to_openpose=openpose_skeleton,
-                          mode=mode,  # 'performance', 'lightweight', 'balanced'. Default: 'balanced'
-                          backend=backend,
-                           device=device)
+
+def get_wholebody_model(device="cuda", backend="onnxruntime", mode="balanced", openpose_skeleton=False):
+    wholebody = Wholebody(
+        to_openpose=openpose_skeleton,
+        mode=mode,  # 'performance', 'lightweight', 'balanced'. Default: 'balanced'
+        backend=backend,
+        device=device,
+    )
     return wholebody
+
 
 def get_image_range(dir_path):
     if os.path.exists(os.path.join(dir_path, "range.json")):
         import json
-        with open(os.path.join(dir_path, "range.json"), 'r') as f:
+
+        with open(os.path.join(dir_path, "range.json"), "r") as f:
             data = json.load(f)
             start_frame = data["range"][0]
             end_frame = data["range"][1]
@@ -25,7 +31,7 @@ def get_image_range(dir_path):
         return start_frame, end_frame
     else:
         return -1, np.inf
-    
+
 
 def process_bag_file(file, wholebody, create_anotated_images=True):
     print("Processing file: ", file)
@@ -33,12 +39,13 @@ def process_bag_file(file, wholebody, create_anotated_images=True):
         bag_path = file
     else:
         return
-    start_frame, end_frame = get_image_range(os.path.dirname(file))
+    start_frame, end_frame = get_image_range(file.removesuffix(".db3"))
     pipeline, align, converter, base_dir, tmp_path = init_db3(bag_path)
     keypoints_mat = None
     if create_anotated_images:
-        os.makedirs(tmp_path + '/annotated', exist_ok=True)
-    import time 
+        os.makedirs(tmp_path + "/annotated", exist_ok=True)
+    import time
+
     tic = time.time()
     count = 0
     try:
@@ -70,11 +77,15 @@ def process_bag_file(file, wholebody, create_anotated_images=True):
             distance = np.linalg.norm(mean_keypoints - center, axis=1)
             min_dist = np.argmin(distance)
             if create_anotated_images:
-                img = wholebody.draw_skeleton(img, keypoints[min_dist:min_dist + 1], scores, kpt_thr=0.5)
-                cv2.imwrite(os.path.join(tmp_path + '/annotated', f"color_{frame_number}_annotated.png"), img)
+                img = wholebody.draw_skeleton(img, keypoints[min_dist : min_dist + 1], scores, kpt_thr=0)
+                cv2.imwrite(os.path.join(tmp_path + "/annotated", f"color_{frame_number}_annotated.png"), img)
             idx = np.zeros_like(scores) + frame_number
-            global_mat = np.concatenate((keypoints[0], scores[0][:, None], idx[0][:, None]), axis = -1)
-            keypoints_mat = np.vstack([keypoints_mat, global_mat[None]]) if keypoints_mat is not None else global_mat[None]
+            global_mat = np.concatenate(
+                (keypoints[min_dist], scores[min_dist][:, None], idx[min_dist][:, None]), axis=-1
+            )
+            keypoints_mat = (
+                np.vstack([keypoints_mat, global_mat[None]]) if keypoints_mat is not None else global_mat[None]
+            )
     except:
         if count <= 50:
             converter.save_config(os.path.join(base_dir, "camera_config.json"))
@@ -82,7 +93,7 @@ def process_bag_file(file, wholebody, create_anotated_images=True):
     finally:
         if count <= 50:
             converter.save_config(os.path.join(base_dir, "camera_config.json"))
-        print(time.time()-tic)
+        print(time.time() - tic)
         pipeline.stop()
-        np.save(base_dir + '/results/keypoints', keypoints_mat)
+        np.save(base_dir + "/results/keypoints", keypoints_mat)
     return base_dir, tmp_path

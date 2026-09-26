@@ -140,7 +140,7 @@ def perform_icp(ref_pc, target_pc, threshold=0.015, initial_guess=np.eye(4), sho
     target_pc.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamHybrid(radius=0.03, max_nn=30))
     ref_pc.orient_normals_towards_camera_location([0, 0, 0])
     target_pc.orient_normals_towards_camera_location([0, 0, 0])
-    loss = o3d.pipelines.registration.TukeyLoss(k=0.02)
+    loss = o3d.pipelines.registration.TukeyLoss(k=0.002)
     reg_p2p = o3d.pipelines.registration.registration_icp(
         ref_pc,
         target_pc,
@@ -148,15 +148,15 @@ def perform_icp(ref_pc, target_pc, threshold=0.015, initial_guess=np.eye(4), sho
         initial_guess,
         o3d.pipelines.registration.TransformationEstimationPointToPlane(loss),
     )
-    if np.linalg.norm(reg_p2p.transformation[:3,3])*1000 > 5:
-        print(
-        f"fitness={reg_p2p.fitness:.3f}, "
-        f"rmse={reg_p2p.inlier_rmse*1000:.2f} mm, "
-        f"translation={np.linalg.norm(reg_p2p.transformation[:3,3])*1000:.2f} mm"
-        )
-        angle = Rotation.from_matrix(reg_p2p.transformation[:3, :3]).magnitude()
+    # if np.linalg.norm(reg_p2p.transformation[:3,3])*1000 > 5:
+    #     print(
+    #     f"fitness={reg_p2p.fitness:.3f}, "
+    #     f"rmse={reg_p2p.inlier_rmse*1000:.2f} mm, "
+    #     f"translation={np.linalg.norm(reg_p2p.transformation[:3,3])*1000:.2f} mm"
+    #     )
+    #     angle = Rotation.from_matrix(reg_p2p.transformation[:3, :3]).magnitude()
 
-        print(f"rotation={np.degrees(angle):.3f} deg")
+    #     print(f"rotation={np.degrees(angle):.3f} deg")
     if show:
         o3d_pcd_result = o3d.geometry.PointCloud(ref_pc)
         o3d_pcd_result.transform(reg_p2p.transformation)

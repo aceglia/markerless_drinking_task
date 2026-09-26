@@ -34,8 +34,8 @@ class ProcessingOptions:
         self.projection = {"clusters": self.clusters, "replace_existing": False}
         self.jump_filtering = {
             "enable": True,
-            "smooth_process_noise": {"opposite_arm": 1, "motion_arm": 10, "center": 10},
-            "smooth_measurement_noise": {"opposite_arm": 1e-4, "motion_arm": 1e-5, "center": 1e-2},
+            "smooth_process_noise": {"opposite_arm": 1e-1, "motion_arm": 8, "center": 10},
+            "smooth_measurement_noise": {"opposite_arm": 1e-4, "motion_arm": 1e-3, "center": 1e-2},
             "smooth_nis_threshold": {"opposite_arm": 10, "motion_arm": 40, "center": 5},
             "save_plot": True,
         }

@@ -7,7 +7,7 @@ data_processing:
   jump_filtering:
     enable: true
     smooth_process_noise:
-      opposite_arm: 1
+      opposite_arm: 0.1
       motion_arm: 10
       center: 10
     smooth_measurement_noise:
@@ -27,7 +27,7 @@ CNN_model:
   mode: balanced
   device: cuda
   backend: onnxruntime
-  save_annotated_images: false
+  save_annotated_images: true
 projection:
   clusters:
     thorax:

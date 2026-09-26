@@ -96,19 +96,38 @@ def process_file(args):
     finally:
         pipeline.stop()
 
-
-def process_folder(folder):
+def process_files(files):
     cpu_count = os.cpu_count()
     num_processes = max(1, cpu_count - 2)
-    files = [f for f in os.listdir(folder) if f.endswith(".db3")]
+
+    jobs = [(os.path.dirname(f), os.path.basename(f)) for f in files]
+
+    with Pool(processes=num_processes) as pool:
+        results = pool.map(process_file, jobs)
+
+    return results
+
+def process_folder(folder, single_file_path=None):
+    cpu_count = os.cpu_count()
+    num_processes = max(1, cpu_count - 2)
+    files = []
+    folders = []
+    if folder != "":
+        files.extend([f for f in os.listdir(folder) if f.endswith(".db3")])
+        folders.extend([f for f in os.listdir(folder) if os.path.isdir(os.path.join(folder, f))])
+    if single_file_path:
+        files.append(os.path.basename(single_file_path))
+        folders.append(os.path.dirname(single_file_path))
 
     if not files:
         raise RuntimeError("No .db3 files found in the selected folder.")
 
-    jobs = [(folder, f) for f in files]
-
-    with Pool(processes=num_processes) as pool:
-        results = pool.map(process_file, jobs)
+    jobs = [(fold, f) for fold, f in zip(folders, files)]
+    if len(jobs) == 1:
+        results = [process_file(jobs[0])]
+    else:
+        with Pool(processes=num_processes) as pool:
+            results = pool.map(process_file, jobs)
 
     return results
 
@@ -119,20 +138,34 @@ class App:
         self.root = root
 
         root.title("RealSense image extractor")
-        root.geometry("550x220")
+        root.geometry("550x500")
+        self.to_process_files = []
 
         self.folder = tk.StringVar()
+        self.single_file_path = tk.StringVar()
+        self.match_folder = tk.StringVar()
 
         # Folder selection
         tk.Label(root, text="Input folder:").pack(pady=(20, 5))
-
         frame = tk.Frame(root)
         frame.pack(fill="x", padx=20)
-
         tk.Entry(frame, textvariable=self.folder).pack(side="left", fill="x", expand=True)
-
-        tk.Button(frame, text="Browse", command=self.select_folder).pack(side="left", padx=(5, 0))
-
+        self.fold_button = tk.Button(frame, text="Browse", command=self.select_folder)
+        self.fold_button.pack(side="left", padx=(5, 0))
+        
+        tk.Label(root, text="Input file:").pack(pady=(20, 5))
+        frame = tk.Frame(root)
+        frame.pack(fill="x", padx=20)
+        tk.Entry(frame, textvariable=self.single_file_path).pack(side="left", fill="x", expand=True)
+        self.sing_file = tk.Button(frame, text="Browse", command=self.select_single_file)
+        self.sing_file.pack(side="left", padx=(5, 0))
+        
+        tk.Label(root, text="Search for match file in subfolders:").pack(pady=(20, 5))
+        frame = tk.Frame(root)
+        frame.pack(fill="x", padx=20)
+        tk.Entry(frame, textvariable=self.match_folder).pack(side="left", fill="x", expand=True)
+        self.find_button = tk.Button(frame, text="Browse", command=self.find_match_files)
+        self.find_button.pack(side="left", padx=(5, 0))
         # Process button
         self.process_button = tk.Button(root, text="Process", command=self.process)
         self.process_button.pack(pady=20)
@@ -142,6 +175,47 @@ class App:
 
         tk.Label(root, textvariable=self.status).pack()
 
+    def find_match_files(self):
+        self.fold_button.config(state="disabled")
+        self.sing_file.config(state="disabled")
+        folder = filedialog.askdirectory(title="Select folder where to look for match files")
+        if folder:
+            self.match_folder.set(folder)
+            self.status.set("Match folder selected.")
+        self.to_process_files = self.find_match_files_in_subfolders(folder)
+
+    def extract_db3_from_match_files(self, match_files):
+        # find what come after : RGBD File Name:
+        files = []
+        with open(match_files, "r") as f:
+            lines = f.readlines()
+            for line in lines:
+                if "RGBD File Name:" in line:
+                    db3_file = line.split("RGBD File Name:")[1].strip()
+                    files.append(os.path.join(os.path.dirname(match_files), db3_file))
+        return files
+
+    def find_match_files_in_subfolders(self, folder):
+        if not os.path.isdir(folder):
+            messagebox.showerror("Error", "Selected folder does not exist.")
+            return
+
+        file_to_process = []
+        match_files = []
+        for root_dir, _, files in os.walk(folder):
+            for file in files:
+                if file == 'file_match.txt':
+                    match_files.append(os.path.join(root_dir, file))
+                    file_to_process.extend(self.extract_db3_from_match_files(os.path.join(root_dir, file)))
+
+        if match_files:
+            messagebox.showinfo("Match files found", f"Found {len(match_files)} match files.")
+            self.status.set(f"Found {len(match_files)} match files, {len(file_to_process)} .db3 files to process.")
+        else:
+            messagebox.showinfo("No match files found", "No 'file_match.txt' files found in the selected folder.")
+            self.status.set("No match files found.")
+        return file_to_process
+
     def select_folder(self):
         folder = filedialog.askdirectory(title="Select folder containing .db3 files")
 
@@ -149,16 +223,24 @@ class App:
             self.folder.set(folder)
             self.status.set("Folder selected.")
 
+    def select_single_file(self):
+        self.find_button.config(state="disabled")
+        file_path = filedialog.askopenfilename(title="Select a .db3 file", filetypes=[("DB3 files", "*.db3")])
+
+        if file_path:
+            self.single_file_path.set(file_path)
+            self.status.set("Single file selected.")
+
     def process(self):
+        self.find_button.config(state="active")
+        self.fold_button.config(state="active")
+        self.sing_file.config(state="active")
 
         folder = self.folder.get()
+        single_file_path = self.single_file_path.get()
 
-        if not folder:
-            messagebox.showwarning("No folder", "Please select a folder first.")
-            return
-
-        if not os.path.isdir(folder):
-            messagebox.showerror("Error", "Selected folder does not exist.")
+        if not folder and not single_file_path:
+            messagebox.showwarning("No folder or file", "Please select a folder or a single file.")
             return
 
         self.process_button.config(state="disabled")
@@ -166,15 +248,22 @@ class App:
 
         import threading
 
-        thread = threading.Thread(target=self.run_processing, args=(folder,), daemon=True)
+        thread = threading.Thread(target=self.run_processing, args=(folder, single_file_path, self.to_process_files), daemon=True)
         thread.start()
 
-    def run_processing(self, folder):
+    def run_processing(self, folder, single_file_path, to_process_files):
 
         try:
-            results = process_folder(
-                folder,
-            )
+            if len(to_process_files) > 0:
+                results = process_files(
+                    to_process_files
+                )
+            else:
+                results = process_folder(
+                    folder,
+                    single_file_path if single_file_path else None
+
+                )
 
             successful = 0
             failed = 0
