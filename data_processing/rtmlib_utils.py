@@ -21,7 +21,6 @@ def get_wholebody_model(device="cuda", backend="onnxruntime", mode="balanced", o
 def get_image_range(dir_path):
     if os.path.exists(os.path.join(dir_path, "range.json")):
         import json
-
         with open(os.path.join(dir_path, "range.json"), "r") as f:
             data = json.load(f)
             start_frame = data["range"][0]
@@ -30,6 +29,9 @@ def get_image_range(dir_path):
             end_frame = np.inf
         return start_frame, end_frame
     else:
+        dict = {"range": [-1, -1]}
+        with open(os.path.join(dir_path, "range.json"), "w") as json_file:
+            json.dump(dict, json_file, indent=4)
         return -1, np.inf
 
 
