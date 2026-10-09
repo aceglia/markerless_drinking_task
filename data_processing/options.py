@@ -24,7 +24,7 @@ class ProcessingOptions:
         self.low_pass_filter = {"enable": True, "cutoff": 6, "order": 4}
         self.fill_gaps = {"enable": True, "threshold": 10}
         self.motion_segmentation = {"threshold_onset": 0.1, "threshold_drinking": 0.1, "threshold_transporting": 0.1}
-        self.events = {"cut": True, "names": ["Start", "Stop"], "replace_existing": False}
+        self.events = {"cut": True, "names": ["Start", "Stop"]}
         self.CNN_model = {
             "mode": "balanced",
             "device": "cuda",

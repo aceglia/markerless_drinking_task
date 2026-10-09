@@ -73,12 +73,13 @@ class RGBDProcessor(Processor):
                 print(f"Error occurred while scaling the model: {e}")
                 scaled_model = osim_model
             
-            q = self._compute_kinematics(markers, names, scaled_model, output_dir=base_dir + "/results")
+            q = self._compute_kinematics(markers, names, scaled_model, data_rate=self.keypoints_processor.camera.color.fps, output_dir=base_dir + "/results")
             self._compute_segmentation(
                 markers,
                 names,
                 q,
                 self.ukf.dof_names,
+                self.keypoints_processor.camera.color.fps,
                 self.keypoints_processor.side,
                 camera=self.keypoints_processor.camera,
                 img_paths=(self.keypoints_processor.color_img_path, self.keypoints_processor.depth_img_path),
@@ -87,25 +88,3 @@ class RGBDProcessor(Processor):
                 threshold_transporting=self.options.motion_segmentation['threshold_transporting'],
                 output_dir=base_dir + "/results"
             )
-
-    def _scale_model(self, osim_model_path, output_model_path, markers_file, setup_file):
-        import opensim as osim
-        osim_model = osim.Model(osim_model_path)
-        scale_tool = osim.ScaleTool(setup_file)
-        scale_tool.getGenericModelMaker().setModelFileName(osim_model_path)
-
-        # Scale the model based on the marker data
-        scaler = scale_tool.getModelScaler()
-        scaler.setApply(True)
-        scaler.setMarkerFileName(markers_file)
-        scaler.setOutputModelFileName(output_model_path)
-        scaler.processModel(osim_model) 
-
-        # Place the markers on the scaled model
-        scaled_model = osim.Model(output_model_path)
-        marker_placer = scale_tool.getMarkerPlacer()
-        marker_placer.setApply(True)
-        marker_placer.setMarkerFileName(markers_file)
-        marker_placer.setOutputModelFileName(output_model_path)
-        marker_placer.processModel(scaled_model)
-        return scaled_model

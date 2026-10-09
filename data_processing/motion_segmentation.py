@@ -1,10 +1,13 @@
-import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 import re
 
 from .camera_converter import CameraConverter
+try:
+    import cv2
+except ImportError:
+    pass
 
 try:
     from ultralytics import YOLO
@@ -31,13 +34,39 @@ class MotionSegmentation:
         self.markers_jerk_norm = np.linalg.norm(self.markers_jerk, axis=0) * 1e3
         self.markers_acc_norm = np.linalg.norm(self.markers_acceleration, axis=0) * 1e3
         self.markers_speed_norm = np.linalg.norm(self.markers_velocity, axis=0) * 1e3
-        self.wrist_marker = self.expe_markers[:, self.experimental_marker_names.index(f"{self.side}_wrist"), :]
-        self.wrist_marker_speed_norm = self.markers_speed_norm[self.experimental_marker_names.index(f"{self.side}_wrist"), :]
+        if f"{self.side}_wrist" in self.experimental_marker_names:
+            self.wrist_marker = self.expe_markers[:, self.experimental_marker_names.index(f"{self.side}_wrist"), :]
+            self.wrist_marker_speed_norm = self.markers_speed_norm[self.experimental_marker_names.index(f"{self.side}_wrist"), :]
+            self.nose_wrist_dist = np.linalg.norm(
+                self.expe_markers[:, self.experimental_marker_names.index("nose"), :] - self.wrist_marker, axis=0
+            )
+        else:
+            marker_r, marker_u = None, None
+            marker_list = []
+            if f"styl_u_{self.side[0]}" in self.experimental_marker_names:
+                styl_u = self.experimental_marker_names.index(f"styl_u_{self.side[0]}")
+                marker_u = self.expe_markers[:, styl_u, :]
+                marker_list.append(marker_u)
+            if f"styl_r_{self.side[0]}" in self.experimental_marker_names:
+                styl_r = self.experimental_marker_names.index(f"styl_r_{self.side[0]}")
+                marker_r = self.expe_markers[:, styl_r, :]
+                marker_list.append(marker_r)
+            if len(marker_list) != 0:
+                self.wrist_marker = np.nanmean(marker_list, axis=0)
+            else:
+                if f"hand_{self.side[0]}" in self.experimental_marker_names:
+                    hand_idx = self.experimental_marker_names.index(f"hand_{self.side[0]}")
+                    self.wrist_marker = self.expe_markers[:, hand_idx, :]
+                else:
+                    raise ValueError(f"No wrist markers found for side {self.side}. Please provide at least one of the following markers: styl_u_{self.side[0]}, styl_r_{self.side[0]}, hand_{self.side[0]}.")
+            self.wrist_marker_speed_norm = np.mean([self.markers_speed_norm[styl_u, :], self.markers_speed_norm[styl_r, :]], axis=0)
+            self.nose_wrist_dist = np.linalg.norm(
+                self.expe_markers[:, self.experimental_marker_names.index("head_f"), :] - self.wrist_marker, axis=0
+            )
+
         wrist_norm = np.linalg.norm(self.wrist_marker, axis=0)
         self.wrist_velocity = np.gradient(wrist_norm, 1 / 30, axis=-1, edge_order=1)
-        self.nose_wrist_dist = np.linalg.norm(
-            self.expe_markers[:, self.experimental_marker_names.index("nose"), :] - self.wrist_marker, axis=0
-        )
+
         self.join_velocity = np.gradient(self.joint_angles, 1 / self.fps, axis=-1, edge_order=1)
 
     def get_onset_offset(self, threshold=0.05):
@@ -159,7 +188,7 @@ class MotionSegmentation:
         self.transport_end_idx = idx_end
         return (idx_start, idx_end)
 
-    def get_cup_centers(self, img_paths, camera, cup_offset=0.05):
+    def _get_from_img(self, img_paths, camera, cup_offset=0.05):
         cup_centers = []
         iterations = 30
         count = 0
@@ -185,6 +214,18 @@ class MotionSegmentation:
             self.cup_centers = camera.align_with_z(np.array(cup_centers).reshape(2, 3))
         else:
             self.cup_centers = cup_centers
+
+    def _get_from_marker(self):
+        self.cup_centers = [self.expe_markers[:, self.experimental_marker_names.index("cup"), 0], 
+                            self.expe_markers[:, self.experimental_marker_names.index("cup"), -1]]
+
+
+    def get_cup_centers(self, img_paths, camera, cup_offset=0.05):
+        if img_paths is None or camera is None:
+            self._get_from_marker()
+        else:
+            self._get_from_img(img_paths, camera, cup_offset=cup_offset)
+
         return self.cup_centers
 
     def _reorder_paths(self, img_paths):
@@ -210,10 +251,10 @@ class MotionSegmentation:
     ):
         self.get_onset_offset(threshold=threshold_onset)
         self.get_drinking_event(threshold=threshold_drinking)
-        if use_cup_tracking:
+        if img_paths is not None:
             img_paths = self._reorder_paths(img_paths)
-            self.get_cup_centers(img_paths, camera, cup_offset=0.05)
-            self.get_transporting_event(threshold=threshold_transporting)
+        self.get_cup_centers(img_paths, camera, cup_offset=0.05)
+        self.get_transporting_event(threshold=threshold_transporting)
         reaching_time = self._get_phase_time(self.onset_idx, self.transport_start_idx)
         transporting_one = self._get_phase_time(self.transport_start_idx, self.drinking_start_idx)
         drinking_time = self._get_phase_time(self.drinking_start_idx, self.drinking_end_idx)
@@ -221,12 +262,21 @@ class MotionSegmentation:
         motion_end = self._get_phase_time(self.transport_end_idx, self.offset_idx)
         self.segmentation_results = {
             "onset_idx": self.onset_idx,
-            "offset_idx": self.offset_idx,
+            # "offset_idx": self.offset_idx,
             "drinking_start_idx": self.drinking_start_idx,
             "drinking_end_idx": self.drinking_end_idx,
             # "cup_centers": self.cup_centers if use_cup_tracking else None,
             "transport_start_idx": self.transport_start_idx,
             "transport_end_idx": self.transport_end_idx,
+            "return_end": self.offset_idx,
+            "t_onset_idx": self.onset_idx / self.fps,
+            # "offset_idx": self.offset_idx,
+            "t_drinking_start_idx": self.drinking_start_idx / self.fps,
+            "t_drinking_end_idx": self.drinking_end_idx / self.fps,
+            # "cup_centers": self.cup_centers if use_cup_tracking else None,
+            "t_transport_start_idx": self.transport_start_idx / self.fps,
+            "t_transport_end_idx": self.transport_end_idx / self.fps,
+            "t_return_end": self.offset_idx / self.fps,
             "distance_cup": self.cup_center_start_to_end, 
             "reaching_time": reaching_time,
             "transporting_up_time": transporting_one,

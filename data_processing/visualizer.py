@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-
+# add rerun executable to path
+import os
+import sys
+import subprocess
+conda_env_path = sys.prefix
+# executable_path = os.path.join(conda_env_path, "Lib\\site-packages\\rerun_sdk\\rerun_cli\\rerun.exe")
+# subprocess.run([executable_path])
 import pyorerun
 import rerun as rr
 import argparse
@@ -7,7 +13,8 @@ import numpy as np
 
 from camera_converter import CameraConverter
 import os
-import cv2
+# import 
+from PIL import Image
 import pickle
 import csv
 
@@ -72,7 +79,7 @@ def setup_camera(camera_conf_file: str):
 
 def run_realsense(result_dir) -> None:
     display_option = pyorerun.DisplayModelOptions()
-    display_option.mesh_path = r"opensim\Geometry"
+    display_option.mesh_path = r"opensim/Geometry"
     rr.init("rerun_example_live_depth_sensor", spawn=True)
     with open(os.path.join(result_dir, "keypoints_3d.pkl"), "rb") as f:
         marker_dic = pickle.load(f)
@@ -91,7 +98,7 @@ def run_realsense(result_dir) -> None:
     idxs_img = [int(id) for i, id in enumerate(marker_dic["idxs"])]
 
     mot_file = os.path.join(result_dir, "kinematics.mot")
-    q = pyorerun.OsimTimeSeries(mot_file, model_path).q_in_radian
+    q = pyorerun.OsimTimeSeries(mot_file, model_path).q
     camera_converter = setup_camera(camera_config)
     
     frame_nr = 0
@@ -99,16 +106,18 @@ def run_realsense(result_dir) -> None:
     while True:
         if frame_nr >= len(idxs_img):
             break
-        rr.set_time_sequence("frame_nr", frame_nr)
-        depth_image = cv2.imread(img_path + f"\depth_{idxs_img[frame_nr]}.png", cv2.IMREAD_ANYDEPTH)
+        rr.set_time(timeline="step", sequence=frame_nr)
+        # depth_image = cv2.imread(img_path + f"\depth_{idxs_img[frame_nr]}.png", cv2.IMREAD_ANYDEPTH)
+        depth_image = np.asanyarray(Image.open(img_path + rf"\depth_{idxs_img[frame_nr]}.png"), dtype=np.float32)
         depth_image = np.where(
             (depth_image > 2 / camera_converter.depth_scale) | (depth_image <= 0.5 / camera_converter.depth_scale),
             0,
             depth_image,
         )
-        color_image = cv2.cvtColor(
-            cv2.imread(img_path + f"\color_{idxs_img[frame_nr]}.png"), cv2.COLOR_BGR2RGB
-        )
+        # color_image = cv2.cvtColor(
+        #     cv2.imread(img_path + rf"\color_{idxs_img[frame_nr]}.png"), cv2.COLOR_BGR2RGB
+        # )
+        color_image = np.asanyarray(Image.open(img_path + rf"\color_{idxs_img[frame_nr]}.png"), dtype=np.float32)
         rr.log("depth/image", rr.DepthImage(depth_image, meter=1 / camera_converter.depth_scale))
         rr.log("rgb/image", rr.Image(color_image))
         rr.log("rgb/image/2d_keypoints", rr.Points2D(marker_2d[frame_nr],
@@ -118,7 +127,7 @@ def run_realsense(result_dir) -> None:
         rr.log("keypoints", rr.Points3D(markers_3d[frame_nr, :, :], colors=(0, 125, 255), radii=0.01,
                                               keypoint_ids=list(range(marker_2d.shape[1])),
                                                 class_ids=1, show_labels=False))
-        # model.to_rerun(q[:, frame_nr])
+        model.to_rerun(q[:, frame_nr])
         frame_nr += 1
 
 

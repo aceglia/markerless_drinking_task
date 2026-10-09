@@ -90,16 +90,16 @@ class RGBDProcessingApp(QMainWindow):
             self.process_button.setEnabled(False)
 
     def _threaded_process_data(self):
-        try:
-            self.processor.process_trials(
-                    path_list=self.trial_files,
-                    options_file_path=self.options_file.text(),
-                    run_pose_estimation=self.pose_estimation_box.isChecked(),
-                    run_kinematics=self.kinematics_box.isChecked()
-                )
-            self.process_button.setEnabled(True)
-        except Exception as e:
-            print(f"Error occurred while processing data: {e}")
+        # try:
+        self.processor.process_trials(
+                path_list=self.trial_files,
+                options_file_path=self.options_file.text(),
+                run_pose_estimation=self.pose_estimation_box.isChecked(),
+                run_kinematics=self.kinematics_box.isChecked()
+            )
+        self.process_button.setEnabled(True)
+        # except Exception as e:
+        #     print(f"Error occurred while processing data: {e}")
         
     def process_data(self):
         import threading

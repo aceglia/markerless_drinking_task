@@ -115,7 +115,7 @@ class JointMarkerUKF:
         missing = [name for name in model_marker_names if name not in exp_index]
         if missing:
             missing_str = ", ".join(missing)
-            raise ValueError(f"Missing markers in experimental data: {missing_str}")
+            print(f"Missing markers in experimental data: {missing_str}")
 
         self.marker_order = np.array([exp_index[name] for name in model_marker_names], dtype=int)
 
@@ -559,8 +559,15 @@ class JointMarkerUKF:
 
         valid_idxs = ~np.isnan(marker_array_flat)
         if np.any(valid_idxs):
+            R_valid = self.ukf.R[np.ix_(valid_idxs, valid_idxs)]
             z_valid = marker_array_flat[valid_idxs]
-            self.ukf.update(z_valid, hx=lambda x: self.hx(x)[valid_idxs])
+
+            self.ukf.update(
+                z_valid,
+                hx=lambda x: self.hx(x)[valid_idxs],
+                R=R_valid
+            )
+            # self.ukf.update(z_valid, hx=lambda x: self.hx(x)[valid_idxs])
 
         theta_est = self.ukf.x[: self.N_ACTIVE_JOINTS]
         if self.with_markers:

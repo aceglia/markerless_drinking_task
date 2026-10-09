@@ -1,3 +1,6 @@
+import matplotlib
+matplotlib.use("TkAgg") 
+
 from data_processing.visualizer import run_realsense
 
 if __name__ == "__main__":
