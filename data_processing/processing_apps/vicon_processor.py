@@ -1,5 +1,4 @@
 import os
-import pickle
 import numpy as np
 import ezc3d
 
@@ -219,13 +218,19 @@ class ViconProcessor(Processor):
         for markers, trc in zip(processed_markers, saved_trc):
             scale = not 'scaled' in opensim_model and count == 0 
             q = self.compute_kinematics(markers, processed_marker_names, opensim_model, scale_model_file, output_dir=out_dir, saved_trc=trc, scale=scale)
-            kin = self.load_rgbd_files(rgbd_file) if rgbd_file is not None else None
-            kin = kin.T
-            kin_resampled = np.interp(np.linspace(0, kin.shape[-1]-1, q.shape[-1]), np.arange(kin.shape[-1]), kin) if kin is not None else None
+            kin = self.load_rgbd_files(rgbd_file).T if rgbd_file is not None else None
+            kin_resampled = np.array([np.interp(np.linspace(0, kin.shape[-1]-1, q.shape[-1]), np.arange(kin.shape[-1]), kin[i, :]) for i in range(kin.shape[0])]) if kin is not None else None
             if kin_resampled is not None:
-                headers = self.ukf.dof_names
-                to_csv = np.vstack((headers, kin_resampled))
-                np.savetxt(os.path.join(out_dir, f"rgbd_100hz_kinematics_{count}.csv"), to_csv, delimiter=',')
+                headers = list(self.ukf.dof_names)
+                headers += [f"{head}_velocity" for head in self.ukf.dof_names]
+                path_name = os.path.join(out_dir, f"rgbd_100hz_kinematics_{count}.csv") if len(self.processed_trials) > 1 else os.path.join(out_dir, f"rgbd_100hz_kinematics.csv")
+                np.savetxt(
+                    os.path.join(out_dir, path_name),
+                    kin_resampled,
+                    delimiter=",",
+                    header=",".join(headers),
+                    comments=""
+                )
             count += 1
         return processed_markers, processed_marker_names
 

@@ -157,15 +157,19 @@ class ViconProcessingApp(QMainWindow):
             self.process_button.setEnabled(False)
         
     def _threaded_process_data(self):
-        if self.processor is None:
-            self.processor = ViconProcessor()
-        self.processor.initialize(calibration_files=self.calibration_files, options_file=self.options_files.text())
-        osim_model = r"opensim/wu_modified_vicon.osim" if self.opensim_file_input.text() == "" else self.opensim_file_input.text()
-        scaling_tool = r"opensim/scaling_tool_vicon.xml" if self.scaling_tools_file is None else self.scaling_tools_file
-        trials_file = [self.trials_file_input.text()] if isinstance(self.trials_file_input.text(), str) else self.trials_file_input.text()
-        matching_files = self.extract_db3_from_match_files(self.rgbd_file_input.text()) if self.rgbd_file_input.text() != "" else []
-        self.processor.batch_process_trials(trials_file, opensim_model=osim_model, scale=scaling_tool, rgbd_matching_files=matching_files)
-        self.process_button.setEnabled(True)
+        try:
+            if self.processor is None:
+                self.processor = ViconProcessor()
+            self.processor.initialize(calibration_files=self.calibration_files, options_file=self.options_files.text())
+            osim_model = r"opensim/wu_modified_vicon.osim" if self.opensim_file_input.text() == "" else self.opensim_file_input.text()
+            scaling_tool = r"opensim/scaling_tool_vicon.xml" if self.scaling_tools_file is None else self.scaling_tools_file
+            trials_file = [self.trials_file_input.text()] if isinstance(self.trials_file_input.text(), str) else self.trials_file_input.text()
+            matching_files = self.extract_db3_from_match_files(self.rgbd_file_input.text()) if self.rgbd_file_input.text() != "" else []
+            self.processor.batch_process_trials(trials_file, opensim_model=osim_model, scale=scaling_tool, rgbd_matching_files=matching_files)
+            self.process_button.setEnabled(True)
+        except Exception as e:
+            print(f"Error during processing: {e}")
+            self.process_button.setEnabled(True)
 
     def process_data(self):
         import threading

@@ -37,7 +37,12 @@ class ProcessingOptions:
             "smooth_process_noise": {"opposite_arm": 1e-1, "motion_arm": 8, "center": 10},
             "smooth_measurement_noise": {"opposite_arm": 1e-4, "motion_arm": 1e-3, "center": 1e-2},
             "smooth_nis_threshold": {"opposite_arm": 10, "motion_arm": 40, "center": 5},
+            "nose_to_wrist_threshold": 0.2,
             "save_plot": True,
+        }
+        self.data_processing = {
+            "low_pass_filter": self.low_pass_filter,
+            "jump_filtering": self.jump_filtering,
         }
         self.export_trc = True
 
@@ -63,6 +68,9 @@ class ProcessingOptions:
 
     def from_dict(self, options_dict):
         for key, value in options_dict.items():
+            if key == "data_processing":
+                self.from_dict(value)
+                continue
             if hasattr(self, key):
                 setattr(self, key, value)
 

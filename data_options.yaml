@@ -6,6 +6,7 @@ data_processing:
     order: 4
   jump_filtering:
     enable: true
+    nose_to_wrist_threshold: 0.2
     smooth_process_noise:
       opposite_arm: 0.1
       motion_arm: 10
@@ -63,4 +64,3 @@ events:
   names:
   - Start
   - Stop
-  replace_existing: false

@@ -24,16 +24,17 @@ class RGBDProcessor(Processor):
             device=self.options.CNN_model["device"], backend=self.options.CNN_model["backend"], mode=self.options.CNN_model["mode"], openpose_skeleton=False
         )
 
-    def apply_options(self, options):
+    def apply_options(self, options, run_pose_estimation=True):
         self.options.from_file(options)
-        self.init_model()
+        if run_pose_estimation:
+            self.init_model()
 
     def process_single_file(self, bag_file_path, options_file_path=None, run_pose_estimation=True, run_kinematics=True):
         if options_file_path is not None and options_file_path != "":
-            self.apply_options(options_file_path)
-        if self.wholebody_model is None:
-            self.init_model()
+            self.apply_options(options_file_path, run_pose_estimation=run_pose_estimation)
         if run_pose_estimation:
+            if self.wholebody_model is None:
+                self.init_model()
             base_dir, image_dir = process_bag_file(
                 bag_file_path, self.wholebody_model, create_anotated_images=self.options.CNN_model["save_annotated_images"]
             )
@@ -52,6 +53,7 @@ class RGBDProcessor(Processor):
             smoother_process_noise=self.options.jump_filtering['smooth_process_noise'],
             smoother_measurement_noise=self.options.jump_filtering['smooth_measurement_noise'],
             smoother_nis_threshold=self.options.jump_filtering['smooth_nis_threshold'],
+            nose_to_wrist_threshold=self.options.jump_filtering['nose_to_wrist_threshold'],
             save_plot=self.options.jump_filtering['save_plot'],
             output_dir = base_dir + "/results"
         )

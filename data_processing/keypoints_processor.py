@@ -1,6 +1,6 @@
 import matplotlib
 
-matplotlib.use("TkAgg")
+matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
 
@@ -412,6 +412,7 @@ class Keypoints3DProcessor:
         smoother_process_noise=None,
         smoother_measurement_noise=None,
         smoother_nis_threshold=None,
+        nose_to_wrist_threshold=0,
         align_with_z=True,
         save_plot=False,
         shoulder_weight=None,
@@ -441,15 +442,24 @@ class Keypoints3DProcessor:
             "smoother_measurement_noise": smoother_measurement_noise,
             "smoother_nis_threshold": smoother_nis_threshold,
             "align_with_z": align_with_z,
+            "nose_to_wrist_threshold": nose_to_wrist_threshold,
         }
 
-        input = post_process_3d.copy()
+
         if apply_smoother:
+            input = post_process_3d.copy()
+            dist = np.linalg.norm(
+                post_process_3d[:, self.wholebody.get_index("nose"), :] - post_process_3d[:, self.wholebody.get_index(f"{self.side}_wrist"), :], axis=1
+            )
+            # replace values where the distance is too large with NaN
+            idxs = np.where(dist < nose_to_wrist_threshold)[0]
+            post_process_3d[idxs, self.wholebody.get_index(f"{self.side}_wrist"), :] = np.nan
+            post_process_3d[idxs, self.wholebody.get_index("nose"), :] = np.nan
             process_noise, measurement_noise, nis_threshold = self._get_smoother_params(
                 smoother_process_noise, smoother_measurement_noise, smoother_nis_threshold
             )
             post_process_3d = smooth_trajectory(
-                input,
+                post_process_3d,
                 dt=1 / self.camera.color.fps,
                 process_noise=process_noise,
                 measurement_noise=measurement_noise,

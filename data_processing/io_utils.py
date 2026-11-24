@@ -1,7 +1,5 @@
 import numpy as np
-from C3DtoTRC import WriteTrcFromMarkersData
-import os
-import opensim as osim
+from .C3DtoTRC import WriteTrcFromMarkersData
 
 
 # def write_mot_file(filename, time_step, dof_names, states):

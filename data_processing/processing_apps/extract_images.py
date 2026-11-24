@@ -133,7 +133,6 @@ def process_folder(folder, single_file_path=None):
 
 
 class App:
-
     def __init__(self, root):
         self.root = root
 
@@ -166,6 +165,7 @@ class App:
         tk.Entry(frame, textvariable=self.match_folder).pack(side="left", fill="x", expand=True)
         self.find_button = tk.Button(frame, text="Browse", command=self.find_match_files)
         self.find_button.pack(side="left", padx=(5, 0))
+        self.find_button.config(state="active")
         # Process button
         self.process_button = tk.Button(root, text="Process", command=self.process)
         self.process_button.pack(pady=20)
@@ -178,11 +178,16 @@ class App:
     def find_match_files(self):
         self.fold_button.config(state="disabled")
         self.sing_file.config(state="disabled")
+        match_name = tk.simpledialog.askstring("Match file name", "Enter the match file name (default: file_match.txt):\n(You can use '*' for partial name such as : '*_file_match.txt' )", initialvalue="file_match.txt")
+        if not match_name:
+            match_name = "file_match.txt"
+        self.match_file_name = match_name.replace("*", "")
         folder = filedialog.askdirectory(title="Select folder where to look for match files")
         if folder:
             self.match_folder.set(folder)
             self.status.set("Match folder selected.")
-        self.to_process_files = self.find_match_files_in_subfolders(folder)
+            self.to_process_files, match_files = self.find_match_files_in_subfolders(folder)
+            self.status.set(f"Found {len(match_files)} match files, {len(self.to_process_files)} '.db3' files to process.")
 
     def extract_db3_from_match_files(self, match_files):
         # find what come after : RGBD File Name:
@@ -202,22 +207,22 @@ class App:
 
         file_to_process = []
         match_files = []
-        for root_dir, _, files in os.walk(folder):
-            for file in files:
-                if file == 'file_match.txt':
-                    match_files.append(os.path.join(root_dir, file))
-                    file_to_process.extend(self.extract_db3_from_match_files(os.path.join(root_dir, file)))
-
-        if match_files:
-            messagebox.showinfo("Match files found", f"Found {len(match_files)} match files.")
-            self.status.set(f"Found {len(match_files)} match files, {len(file_to_process)} .db3 files to process.")
-        else:
-            messagebox.showinfo("No match files found", "No 'file_match.txt' files found in the selected folder.")
-            self.status.set("No match files found.")
-        return file_to_process
+        in_folder = os.listdir(folder)
+        to_process = [obj for obj in in_folder if os.path.isdir(os.path.join(folder, obj)) or self.match_file_name in obj]
+        for obj in to_process:
+            if os.path.isdir(os.path.join(folder, obj)):
+                file_tmp, match_file_tmp  = self.find_match_files_in_subfolders(os.path.join(folder, obj))
+            elif self.match_file_name in obj: 
+                file_tmp = self.extract_db3_from_match_files(os.path.join(folder, obj))
+                match_file_tmp = [os.path.join(folder, obj)]
+            else:
+                continue
+            file_to_process.extend(file_tmp)
+            match_files.extend(match_file_tmp)
+        return file_to_process, match_files
 
     def select_folder(self):
-        folder = filedialog.askdirectory(title="Select folder containing .db3 files")
+        folder = filedialog.askdirectory(title="Select folder containing '.db3' files")
 
         if folder:
             self.folder.set(folder)
@@ -225,7 +230,7 @@ class App:
 
     def select_single_file(self):
         self.find_button.config(state="disabled")
-        file_path = filedialog.askopenfilename(title="Select a .db3 file", filetypes=[("DB3 files", "*.db3")])
+        file_path = filedialog.askopenfilename(title="Select a '.db3' file", filetypes=[("DB3 files", "*.db3")])
 
         if file_path:
             self.single_file_path.set(file_path)
@@ -249,7 +254,7 @@ class App:
         import threading
 
         thread = threading.Thread(target=self.run_processing, args=(folder, single_file_path, self.to_process_files), daemon=True)
-        thread.start()
+        thread.start()       
 
     def run_processing(self, folder, single_file_path, to_process_files):
 
@@ -281,6 +286,9 @@ class App:
         except Exception as e:
 
             self.root.after(0, lambda: self.processing_error(str(e)))
+        self.fold_button.config(state="active")
+        self.sing_file.config(state="active")
+        self.find_button.config(state="active")
 
     def processing_finished(self, successful, failed):
 
