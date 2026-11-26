@@ -196,7 +196,7 @@ class App:
             lines = f.readlines()
             for line in lines:
                 if "RGBD File Name:" in line:
-                    db3_file = line.split("RGBD File Name:")[1].strip()
+                    db3_file = line.split("RGBD File Name:")[1].split('.db3')[0].strip()
                     files.append(os.path.join(os.path.dirname(match_files), db3_file))
         return files
 

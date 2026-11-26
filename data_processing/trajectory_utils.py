@@ -1,5 +1,5 @@
 import numpy as np
-from sklearn.cluster import DBSCAN
+# from sklearn.cluster import DBSCAN
 from scipy import signal
 from .data_smoother import smooth_marker
 
